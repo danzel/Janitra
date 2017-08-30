@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.26730.8
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Janitra.Api", "Janitra.Api\Janitra.Api.csproj", "{797182B5-0C14-474E-BA69-CD2D908A18B2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Janitra.Data", "Janitra.Data\Janitra.Data.csproj", "{BAA12D2B-A4F3-49FB-A428-7098F82F0044}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{797182B5-0C14-474E-BA69-CD2D908A18B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{797182B5-0C14-474E-BA69-CD2D908A18B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{797182B5-0C14-474E-BA69-CD2D908A18B2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BAA12D2B-A4F3-49FB-A428-7098F82F0044}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BAA12D2B-A4F3-49FB-A428-7098F82F0044}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BAA12D2B-A4F3-49FB-A428-7098F82F0044}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BAA12D2B-A4F3-49FB-A428-7098F82F0044}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
