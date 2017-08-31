@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Janitra.Data.Models
 {
@@ -20,11 +21,17 @@ namespace Janitra.Data.Models
 		public string OAuthId { get; set; }
 
 		/// <summary>
-		/// The login name of the user from the oauth provider, how they will be identified in the app
+		/// The (login) name of the user from the oauth provider, how they will be identified in the app
 		/// </summary>
 		[Required]
-		public string OAuthLogin { get; set; }
+		public string OAuthName { get; set; }
 
 		public UserLevel UserLevel { get; set; }
+
+		//Navigation Fields
+		public ICollection<CitraBuild> AddedCitraBuilds { get; set; }
+		public ICollection<JanitraBot> AddedJanitraBots { get; set; }
+		public ICollection<TestDefinition> AddedTestDefinitions { get; set; }
+		public ICollection<TestRom> AddedTestRoms { get; set; }
 	}
 }

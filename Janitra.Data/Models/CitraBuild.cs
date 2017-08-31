@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Janitra.Data.Models
 {
 	/// <summary>
-	/// Represents a built version of citra, usually 
+	/// Represents a built version of citra
 	/// </summary>
 	public class CitraBuild
 	{
@@ -26,15 +27,15 @@ namespace Janitra.Data.Models
 		/// <summary>
 		/// Zip file location of the build for windows
 		/// </summary>
-		public string WindowsUri { get; set; }
+		public string WindowsUrl { get; set; }
 		/// <summary>
-		/// TarXz file location of the build
+		/// TarXz file location of the build for linux
 		/// </summary>
-		public string LinuxUri { get; set; }
+		public string LinuxUrl { get; set; }
 		/// <summary>
-		/// TarGz file location of the build
+		/// TarGz file location of the build for Mac OS X
 		/// </summary>
-		public string OsxUri { get; set; }
+		public string OsxUrl { get; set; }
 
 		/// <summary>
 		/// UserId of the user that added this build to the system
@@ -43,5 +44,6 @@ namespace Janitra.Data.Models
 
 		//Navigation Fields
 		public User AddedByUser { get; set; }
+		public ICollection<TestResult> TestResults { get; set; }
 	}
 }
