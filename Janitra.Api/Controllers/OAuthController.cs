@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
+using Janitra.Data.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Options;
@@ -29,12 +30,14 @@ namespace Janitra.Api.Controllers
 
 		private readonly IOptions<OAuthControllerOptions> _options;
 		private readonly IDistributedCache _cache;
-		private readonly RandomNumberGenerator _rng = RandomNumberGenerator.Create();
+	    private readonly UserRepository _userRepository;
+	    private readonly RandomNumberGenerator _rng = RandomNumberGenerator.Create();
 		
-		public OAuthController(IOptions<OAuthControllerOptions> options, IDistributedCache cache)
+		public OAuthController(IOptions<OAuthControllerOptions> options, IDistributedCache cache, UserRepository userRepository)
 		{
 			_options = options;
 			_cache = cache;
+			_userRepository = userRepository;
 		}
 
 		[HttpGet("github")]
@@ -69,12 +72,18 @@ namespace Janitra.Api.Controllers
 				new KeyValuePair<string, string>("code", code)
 			}));
 			var result = JsonConvert.DeserializeObject<OAuthAccessToken>(await res.Content.ReadAsStringAsync());
+			if (result.access_token == null)
+				return Forbid();
 
 			//get the user details
 			client.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("JanitraApi", "1.0"));
 			client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("token", result.access_token);
 			res = await client.GetAsync("https://api.github.com/user");
-			var user = JsonConvert.DeserializeObject<GithubUser>(await res.Content.ReadAsStringAsync());
+			var githubUser = JsonConvert.DeserializeObject<GithubUser>(await res.Content.ReadAsStringAsync());
+			if (githubUser.login == null)
+				return Forbid();
+
+			var user = await _userRepository.GetOrCreateUser("github", githubUser.id.ToString(), githubUser.login);
 
 			//TODO: JWT
 			var jwt = "etsektertkesrter==";
