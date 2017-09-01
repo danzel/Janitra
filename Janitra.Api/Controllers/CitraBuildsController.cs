@@ -11,22 +11,35 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Janitra.Api.Controllers
 {
+	/// <summary>
+	/// Responsible for managing the list of Citra Builds
+	/// </summary>
 	[Route("citra-builds")]
 	public class CitraBuildsController : Controller
 	{
 		private readonly JanitraContext _context;
 		private readonly CurrentUser _currentUser;
 
+		/// <summary>
+		/// Constructor
+		/// </summary>
 		public CitraBuildsController(JanitraContext context, CurrentUser currentUser)
 		{
 			_context = context;
 			_currentUser = currentUser;
 		}
 
+		/// <summary>
+		/// Get the list of all Citra Builds.
+		/// </summary>
+		/// <remarks>
+		/// Defaults to only including active ones.
+		/// Returns the latest builds first.
+		/// </remarks>
 		[HttpGet("list")]
 		public async Task<JsonCitraBuild[]> List([FromQuery] bool includeInactive = false)
 		{
-			return await _context.CitraBuilds.Select(c => new JsonCitraBuild
+			return await _context.CitraBuilds.OrderByDescending(c => c.CitraBuildId).Select(c => new JsonCitraBuild
 			{
 				CitraBuildId = c.CitraBuildId,
 				GitHash = c.GitHash,
@@ -38,6 +51,12 @@ namespace Janitra.Api.Controllers
 			}).ToArrayAsync();
 		}
 
+		/// <summary>
+		/// Add a Citra Build
+		/// </summary>
+		/// <remarks>
+		/// Only accessible by Developer level users.
+		/// </remarks>
 		[Authorize(Roles = "Developer")]
 		[HttpPost("add")]
 		public async Task Add([FromBody] NewCitraBuild build)
