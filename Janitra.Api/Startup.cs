@@ -1,5 +1,9 @@
-﻿using System.Text;
+﻿using System;
+using System.IO;
+using System.Reflection;
+using System.Text;
 using Janitra.Api.Controllers;
+using Janitra.Api.Services;
 using Janitra.Data;
 using Janitra.Data.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -9,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace Janitra.Api
 {
@@ -28,7 +33,20 @@ namespace Janitra.Api
 		{
 			services.AddDbContext<JanitraContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Janitra")));
 			services.Add(ServiceDescriptor.Transient<UserRepository, UserRepository>());
+			services.AddCurrentUserService();
+
 			services.Configure<OAuthControllerOptions>(Configuration.GetSection("OAuth"));
+
+			services.AddSwaggerGen(c =>
+			{
+				var baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+				var commentsFileName = Assembly.GetExecutingAssembly().GetName().Name + ".XML";
+				var commentsFile = Path.Combine(baseDirectory, commentsFileName);
+
+				c.AddSecurityDefinition("Bearer", new ApiKeyScheme { Type = "apiKey", Name = "Authorization", In = "header", Description = "Call /oauth/github then put the token in here as \"Bearer .......\"" });
+				c.IncludeXmlComments(commentsFile);
+				c.SwaggerDoc("v1", new Info { Title = "Janitra API", Version = "v1" });
+			});
 
 			services.AddAuthentication(options =>
 				{
@@ -37,10 +55,6 @@ namespace Janitra.Api
 				})
 				.AddJwtBearer(cfg =>
 				{
-					//if (Environment.IsDevelopment())
-					//	cfg.RequireHttpsMetadata = false;
-					//cfg.SaveToken = true;
-
 					cfg.TokenValidationParameters = new TokenValidationParameters
 					{
 						ValidIssuer = Configuration["OAuth:JwtIssuer"],
@@ -63,6 +77,9 @@ namespace Janitra.Api
 
 			app.UseAuthentication();
 			app.UseMvc();
+
+			app.UseSwagger();
+			app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1"); });
 		}
 	}
 }

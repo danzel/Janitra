@@ -7,9 +7,11 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using Janitra.Api.Services;
 using Janitra.Data.Models;
 using Janitra.Data.Repositories;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Options;
@@ -33,6 +35,9 @@ namespace Janitra.Api.Controllers
 		public double JwtLifetimeDays { get; set; }
 	}
 
+	/// <summary>
+	/// Responsible for authentication
+	/// </summary>
 	[Route("oauth")]
 	public class OAuthController : Controller
 	{
@@ -41,16 +46,25 @@ namespace Janitra.Api.Controllers
 		private readonly IOptions<OAuthControllerOptions> _options;
 		private readonly IDistributedCache _cache;
 		private readonly UserRepository _userRepository;
+		private readonly CurrentUser _currentUser;
 		private readonly RandomNumberGenerator _rng = RandomNumberGenerator.Create();
 
-		public OAuthController(IOptions<OAuthControllerOptions> options, IDistributedCache cache, UserRepository userRepository)
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public OAuthController(IOptions<OAuthControllerOptions> options, IDistributedCache cache, UserRepository userRepository, CurrentUser currentUser)
 		{
 			_options = options;
 			_cache = cache;
 			_userRepository = userRepository;
+			_currentUser = currentUser;
 		}
 
+		/// <summary>
+		/// Begin an OAuth authentication with github
+		/// </summary>
 		[HttpGet("github")]
+		[ProducesResponseType(StatusCodes.Status302Found)]
 		public async Task<IActionResult> Github()
 		{
 			var bytes = new byte[16];
@@ -63,7 +77,12 @@ namespace Janitra.Api.Controllers
 			return Redirect("https://github.com/login/oauth/authorize?client_id=" + _options.Value.GithubClientId + "&state=" + state);
 		}
 
+		/// <summary>
+		/// Finish an OAuth authentication with github. Redirects you to a URL including your JWT (for authentication)
+		/// </summary>
 		[HttpGet("github/callback")]
+		[ProducesResponseType(StatusCodes.Status302Found)]
+		[ProducesResponseType(StatusCodes.Status403Forbidden)]
 		public async Task<IActionResult> GithubCallback([FromQuery] string code, [FromQuery] string state)
 		{
 			//Validate state
@@ -100,11 +119,20 @@ namespace Janitra.Api.Controllers
 			return Redirect(_options.Value.RedirectUrl + jwt);
 		}
 
+		/// <summary>
+		/// Returns the authenticated users details if authenticated
+		/// </summary>
 		[Authorize]
-		[HttpGet("test")]
-		public void TestAuth()
+		[HttpGet("verify-auth")]
+		[ProducesResponseType(typeof(VerifyAuthResult), StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+		public VerifyAuthResult VerifyAuth()
 		{
-			var user = HttpContext.User;
+			return new VerifyAuthResult
+			{
+				UserId = _currentUser.User.UserId,
+				Name = _currentUser.User.OAuthName
+			};
 		}
 
 		private string IssueJwt(User user)
@@ -142,6 +170,12 @@ namespace Janitra.Api.Controllers
 			public string login { get; set; }
 			public long id { get; set; }
 			public string name { get; set; }
+		}
+
+		public class VerifyAuthResult
+		{
+			public int UserId { get; set; }
+			public string Name { get; set; }
 		}
 	}
 }
