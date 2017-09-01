@@ -4,7 +4,6 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
-using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using Janitra.Api.Services;
@@ -47,7 +46,6 @@ namespace Janitra.Api.Controllers
 		private readonly IDistributedCache _cache;
 		private readonly UserRepository _userRepository;
 		private readonly CurrentUser _currentUser;
-		private readonly RandomNumberGenerator _rng = RandomNumberGenerator.Create();
 
 		/// <summary>
 		/// Constructor
@@ -67,10 +65,7 @@ namespace Janitra.Api.Controllers
 		[ProducesResponseType(StatusCodes.Status302Found)]
 		public async Task<IActionResult> Github()
 		{
-			var bytes = new byte[16];
-			_rng.GetBytes(bytes);
-			var stateBytes = SHA256.Create().ComputeHash(bytes);
-			var state = BitConverter.ToString(stateBytes);
+			var state = SecureRandomStringGenerator.Generate();
 
 			await _cache.SetAsync("github:state:" + state, new byte[0], new DistributedCacheEntryOptions { AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5) });
 
