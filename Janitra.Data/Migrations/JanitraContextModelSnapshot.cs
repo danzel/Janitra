@@ -205,7 +205,7 @@ namespace Janitra.Data.Migrations
                     b.HasOne("Janitra.Data.Models.User", "AddedByUser")
                         .WithMany("AddedCitraBuilds")
                         .HasForeignKey("AddedByUserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("Janitra.Data.Models.JanitraBot", b =>
@@ -213,7 +213,7 @@ namespace Janitra.Data.Migrations
                     b.HasOne("Janitra.Data.Models.User", "AddedByUser")
                         .WithMany("AddedJanitraBots")
                         .HasForeignKey("AddedByUserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("Janitra.Data.Models.TestDefinition", b =>
@@ -221,7 +221,7 @@ namespace Janitra.Data.Migrations
                     b.HasOne("Janitra.Data.Models.User", "AddedByUser")
                         .WithMany("AddedTestDefinitions")
                         .HasForeignKey("AddedByUserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Janitra.Data.Models.TestRom", "TestRom")
                         .WithMany("UsedByTestDefinitions")
@@ -252,7 +252,7 @@ namespace Janitra.Data.Migrations
                     b.HasOne("Janitra.Data.Models.User", "AddedByUser")
                         .WithMany("AddedTestRoms")
                         .HasForeignKey("AddedByUserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 #pragma warning restore 612, 618
         }

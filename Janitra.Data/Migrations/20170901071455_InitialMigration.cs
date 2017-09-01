@@ -47,7 +47,7 @@ namespace Janitra.Data.Migrations
                         column: x => x.AddedByUserId,
                         principalTable: "Users",
                         principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -70,7 +70,7 @@ namespace Janitra.Data.Migrations
                         column: x => x.AddedByUserId,
                         principalTable: "Users",
                         principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -95,7 +95,7 @@ namespace Janitra.Data.Migrations
                         column: x => x.AddedByUserId,
                         principalTable: "Users",
                         principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -121,7 +121,7 @@ namespace Janitra.Data.Migrations
                         column: x => x.AddedByUserId,
                         principalTable: "Users",
                         principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_TestDefinitions_TestRoms_TestRomId",
                         column: x => x.TestRomId,

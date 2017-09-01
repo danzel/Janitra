@@ -1,13 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Security.Claims;
 using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
+using Janitra.Data.Models;
 using Janitra.Data.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 
 namespace Janitra.Api.Controllers
@@ -21,18 +27,22 @@ namespace Janitra.Api.Controllers
 		/// Where to redirect the user to after authenticating them, will have their JWT appended to the end
 		/// </summary>
 		public string RedirectUrl { get; set; }
+
+		public string JwtIssuer { get; set; }
+		public string JwtKey { get; set; }
+		public double JwtLifetimeDays { get; set; }
 	}
 
 	[Route("oauth")]
-    public class OAuthController : Controller
-    {
+	public class OAuthController : Controller
+	{
 		//https://developer.github.com/apps/building-integrations/setting-up-and-registering-oauth-apps/about-authorization-options-for-oauth-apps/
 
 		private readonly IOptions<OAuthControllerOptions> _options;
 		private readonly IDistributedCache _cache;
-	    private readonly UserRepository _userRepository;
-	    private readonly RandomNumberGenerator _rng = RandomNumberGenerator.Create();
-		
+		private readonly UserRepository _userRepository;
+		private readonly RandomNumberGenerator _rng = RandomNumberGenerator.Create();
+
 		public OAuthController(IOptions<OAuthControllerOptions> options, IDistributedCache cache, UserRepository userRepository)
 		{
 			_options = options;
@@ -50,16 +60,16 @@ namespace Janitra.Api.Controllers
 
 			await _cache.SetAsync("github:state:" + state, new byte[0], new DistributedCacheEntryOptions { AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5) });
 
-		    return Redirect("https://github.com/login/oauth/authorize?client_id=" + _options.Value.GithubClientId + "&state=" + state);
-	    }
+			return Redirect("https://github.com/login/oauth/authorize?client_id=" + _options.Value.GithubClientId + "&state=" + state);
+		}
 
 		[HttpGet("github/callback")]
 		public async Task<IActionResult> GithubCallback([FromQuery] string code, [FromQuery] string state)
 		{
-			//TODO: Validate state
+			//Validate state
 			var stateByte = await _cache.GetAsync("github:state:" + state);
 			if (stateByte == null)
-				return Forbid(); //TODO: Reason or redirect or something instead
+				return Forbid(); //TODO: Nicer error handling
 			await _cache.RemoveAsync("github:state:" + state);
 
 			//Post to github to verify the code
@@ -73,7 +83,7 @@ namespace Janitra.Api.Controllers
 			}));
 			var result = JsonConvert.DeserializeObject<OAuthAccessToken>(await res.Content.ReadAsStringAsync());
 			if (result.access_token == null)
-				return Forbid();
+				return Forbid(); //TODO: Nicer error handling
 
 			//get the user details
 			client.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("JanitraApi", "1.0"));
@@ -81,14 +91,43 @@ namespace Janitra.Api.Controllers
 			res = await client.GetAsync("https://api.github.com/user");
 			var githubUser = JsonConvert.DeserializeObject<GithubUser>(await res.Content.ReadAsStringAsync());
 			if (githubUser.login == null)
-				return Forbid();
+				return Forbid(); //TODO: Nicer error handling
 
 			var user = await _userRepository.GetOrCreateUser("github", githubUser.id.ToString(), githubUser.login);
 
-			//TODO: JWT
-			var jwt = "etsektertkesrter==";
+			var jwt = IssueJwt(user);
 
 			return Redirect(_options.Value.RedirectUrl + jwt);
+		}
+
+		[Authorize]
+		[HttpGet("test")]
+		public void TestAuth()
+		{
+			var user = HttpContext.User;
+		}
+
+		private string IssueJwt(User user)
+		{
+			var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.Value.JwtKey));
+			var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+			var claims = new List<Claim>
+			{
+				new Claim(JwtRegisteredClaimNames.Sub, user.UserId.ToString()),
+				new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+			};
+			//TODO: Add more claims based on their user level
+
+			var token = new JwtSecurityToken(
+				issuer: _options.Value.JwtIssuer,
+				audience: _options.Value.JwtIssuer,
+				claims: claims,
+				expires: DateTime.Now.AddDays(_options.Value.JwtLifetimeDays),
+				signingCredentials: creds
+			);
+
+			return new JwtSecurityTokenHandler().WriteToken(token);
 		}
 
 		private class OAuthAccessToken

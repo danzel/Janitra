@@ -25,7 +25,8 @@ namespace Janitra.Data
 			modelBuilder.Entity<CitraBuild>()
 				.HasOne(cb => cb.AddedByUser)
 				.WithMany(u => u.AddedCitraBuilds)
-				.HasForeignKey(cb => cb.AddedByUserId);
+				.HasForeignKey(cb => cb.AddedByUserId)
+				.OnDelete(DeleteBehavior.Restrict);
 
 			//UK CitraBuild.GitHash
 			modelBuilder.Entity<CitraBuild>()
@@ -37,14 +38,16 @@ namespace Janitra.Data
 			modelBuilder.Entity<JanitraBot>()
 				.HasOne(jb => jb.AddedByUser)
 				.WithMany(u => u.AddedJanitraBots)
-				.HasForeignKey(jb => jb.AddedByUserId);
+				.HasForeignKey(jb => jb.AddedByUserId)
+				.OnDelete(DeleteBehavior.Restrict);
 
 
 			//FK TestDefinition* -> AddedByUser
 			modelBuilder.Entity<TestDefinition>()
 				.HasOne(td => td.AddedByUser)
 				.WithMany(u => u.AddedTestDefinitions)
-				.HasForeignKey(td => td.AddedByUserId);
+				.HasForeignKey(td => td.AddedByUserId)
+				.OnDelete(DeleteBehavior.Restrict);
 
 			//FK TestDefinition* -> TestRom
 			modelBuilder.Entity<TestDefinition>()
@@ -81,7 +84,8 @@ namespace Janitra.Data
 			modelBuilder.Entity<TestRom>()
 				.HasOne(td => td.AddedByUser)
 				.WithMany(u => u.AddedTestRoms)
-				.HasForeignKey(td => td.AddedByUserId);
+				.HasForeignKey(td => td.AddedByUserId)
+				.OnDelete(DeleteBehavior.Restrict);
 
 
 			//UK User.[OAuthProvider + OAuthId]

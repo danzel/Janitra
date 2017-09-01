@@ -12,7 +12,7 @@ using System;
 namespace Janitra.Data.Migrations
 {
     [DbContext(typeof(JanitraContext))]
-    [Migration("20170831091637_InitialMigration")]
+    [Migration("20170901071455_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -206,7 +206,7 @@ namespace Janitra.Data.Migrations
                     b.HasOne("Janitra.Data.Models.User", "AddedByUser")
                         .WithMany("AddedCitraBuilds")
                         .HasForeignKey("AddedByUserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("Janitra.Data.Models.JanitraBot", b =>
@@ -214,7 +214,7 @@ namespace Janitra.Data.Migrations
                     b.HasOne("Janitra.Data.Models.User", "AddedByUser")
                         .WithMany("AddedJanitraBots")
                         .HasForeignKey("AddedByUserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("Janitra.Data.Models.TestDefinition", b =>
@@ -222,7 +222,7 @@ namespace Janitra.Data.Migrations
                     b.HasOne("Janitra.Data.Models.User", "AddedByUser")
                         .WithMany("AddedTestDefinitions")
                         .HasForeignKey("AddedByUserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Janitra.Data.Models.TestRom", "TestRom")
                         .WithMany("UsedByTestDefinitions")
@@ -253,7 +253,7 @@ namespace Janitra.Data.Migrations
                     b.HasOne("Janitra.Data.Models.User", "AddedByUser")
                         .WithMany("AddedTestRoms")
                         .HasForeignKey("AddedByUserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 #pragma warning restore 612, 618
         }
