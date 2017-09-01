@@ -1,8 +1,8 @@
 ﻿using Janitra.Data;
 using Janitra.Data.Models;
 using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using System.Linq;
 
 namespace Janitra.Api.Services
 {
@@ -21,7 +21,7 @@ namespace Janitra.Api.Services
 		public static void AddCurrentUserService(this IServiceCollection services)
 		{
 			services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-			services.Add(ServiceDescriptor.Scoped(async s =>
+			services.Add(ServiceDescriptor.Scoped(s =>
 			{
 				//if (s.GetService<IHttpContextAccessor>() == null)
 				//	return new CurrentUser(null);
@@ -30,7 +30,7 @@ namespace Janitra.Api.Services
 
 				var context = s.GetService<IHttpContextAccessor>().HttpContext;
 				if (context != null && context.User.Identity.IsAuthenticated)
-					return new CurrentUser(await janitraContext.Users.SingleAsync(u => u.UserId == int.Parse(context.User.Identity.Name)));
+					return new CurrentUser(janitraContext.Users.Single(u => u.UserId == int.Parse(context.User.Identity.Name)));
 				return new CurrentUser(null);
 			}));
 		}
