@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Janitra.Data.Models
@@ -43,7 +44,7 @@ namespace Janitra.Data.Models
 		public string CodeUrl { get; set; }
 
 		public int AddedByUserId { get; set; }
-
+		public DateTimeOffset AddedAt { get; set; }
 
 		//Navigation Fields
 

@@ -151,6 +151,8 @@ namespace Janitra.Data.Migrations
                     b.Property<int>("TestRomId")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<DateTimeOffset>("AddedAt");
+
                     b.Property<int>("AddedByUserId");
 
                     b.Property<string>("CodeUrl");

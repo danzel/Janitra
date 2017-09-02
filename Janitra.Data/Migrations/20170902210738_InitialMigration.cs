@@ -79,6 +79,7 @@ namespace Janitra.Data.Migrations
                 {
                     TestRomId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    AddedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     AddedByUserId = table.Column<int>(type: "int", nullable: false),
                     CodeUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     FileName = table.Column<string>(type: "nvarchar(max)", nullable: false),

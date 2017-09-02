@@ -12,7 +12,7 @@ using System;
 namespace Janitra.Data.Migrations
 {
     [DbContext(typeof(JanitraContext))]
-    [Migration("20170901071455_InitialMigration")]
+    [Migration("20170902210738_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -151,6 +151,8 @@ namespace Janitra.Data.Migrations
                 {
                     b.Property<int>("TestRomId")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<DateTimeOffset>("AddedAt");
 
                     b.Property<int>("AddedByUserId");
 
