@@ -1,5 +1,7 @@
-﻿using System.Linq;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Janitra.Api.Services;
 using Janitra.Data;
 using Janitra.Data.Models;
@@ -17,6 +19,7 @@ namespace Janitra.Api.Controllers
 	{
 		private readonly JanitraContext _context;
 		private readonly CurrentUser _currentUser;
+		private readonly IMapper _mapper;
 
 		/// <summary>
 		/// Constructor
@@ -25,6 +28,23 @@ namespace Janitra.Api.Controllers
 		{
 			_context = context;
 			_currentUser = currentUser;
+
+			_mapper = CreateMapper();
+		}
+
+		private IMapper CreateMapper()
+		{
+			var config = new MapperConfiguration(cfg =>
+			{
+				cfg.CreateMap<JanitraBot, JsonJanitraBot>(MemberList.Destination)
+					.ForMember(jjb => jjb.AddedByUserName, o => o.MapFrom(jb => jb.AddedByUser.OAuthName));
+
+				cfg.CreateMap<NewJanitraBot, JanitraBot>(MemberList.Source);
+			});
+
+			config.AssertConfigurationIsValid();
+
+			return config.CreateMapper();
 		}
 
 		/// <summary>
@@ -33,15 +53,11 @@ namespace Janitra.Api.Controllers
 		[HttpGet("list")]
 		public async Task<JsonJanitraBot[]> List()
 		{
-			return await _context.JanitraBots.Include(j => j.AddedByUser).OrderBy(j => j.JanitraBotId).Select(j => new JsonJanitraBot
-			{
-				JanitraBotId = j.JanitraBotId,
-				Name = j.Name,
-				HardwareDetails = j.HardwareDetails,
-				Os = j.Os,
-				AddedByUserId = j.AddedByUserId,
-				AddedByUserName = j.AddedByUser.OAuthName
-			}).ToArrayAsync();
+			return await _context.JanitraBots
+				.Include(j => j.AddedByUser)
+				.OrderBy(j => j.JanitraBotId)
+				.Select(j => _mapper.Map<JsonJanitraBot>(j))
+				.ToArrayAsync();
 		}
 
 		/// <summary>
@@ -52,49 +68,53 @@ namespace Janitra.Api.Controllers
 		/// </remarks>
 		[Authorize(Roles = "Developer")]
 		[HttpPost("add")]
-		public async Task<AddResult> Add([FromBody] NewJanitraBot botDetails)
+		public async Task<AddBotResult> Add([FromBody] NewJanitraBot botDetails)
 		{
 			string accessKey = SecureRandomStringGenerator.Generate();
 
-			var bot = new JanitraBot
-			{
-				AccessKey = CryptoHelper.Crypto.HashPassword(accessKey),
-				AddedByUserId = _currentUser.User.UserId,
-				HardwareDetails = botDetails.HardwareDetails,
-				Name = botDetails.Name,
-				Os = botDetails.Os
-			};
+			var bot = _mapper.Map<JanitraBot>(botDetails);
+			bot.AccessKey = CryptoHelper.Crypto.HashPassword(accessKey);
+			bot.AddedByUser = _currentUser.User;
 
 			await _context.JanitraBots.AddAsync(bot);
+			await _context.SaveChangesAsync();
 
-			return new AddResult
+			return new AddBotResult
 			{
 				JanitraBotId = bot.JanitraBotId,
 				AccessKey = accessKey
 			};
 		}
 
+		//TODO? Regenerate access key (if user loses it)
+
 		public class JsonJanitraBot
 		{
 			public int JanitraBotId { get; set; }
+			[Required]
 			public string Name { get; set; }
+			[Required]
 			public string HardwareDetails { get; set; }
 			public OsType Os { get; set; }
 			public int AddedByUserId { get; set; }
+			[Required]
 			public string AddedByUserName { get; set; }
 		}
 
 		public class NewJanitraBot
 		{
+			[Required]
 			public string Name { get; set; }
+			[Required]
 			public string HardwareDetails { get; set; }
 			public OsType Os { get; set; }
 		}
 
 
-		public class AddResult
+		public class AddBotResult
 		{
 			public int JanitraBotId { get; set; }
+			[Required]
 			public string AccessKey { get; set; }
 		}
 	}

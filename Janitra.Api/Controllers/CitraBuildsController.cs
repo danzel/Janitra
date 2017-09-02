@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Janitra.Api.Services;
 using Janitra.Data;
 using Janitra.Data.Models;
@@ -19,6 +20,7 @@ namespace Janitra.Api.Controllers
 	{
 		private readonly JanitraContext _context;
 		private readonly CurrentUser _currentUser;
+		private readonly IMapper _mapper;
 
 		/// <summary>
 		/// Constructor
@@ -27,6 +29,21 @@ namespace Janitra.Api.Controllers
 		{
 			_context = context;
 			_currentUser = currentUser;
+
+			_mapper = CreateMapper();
+		}
+
+		private IMapper CreateMapper()
+		{
+			var config = new MapperConfiguration(cfg =>
+			{
+				cfg.CreateMap<CitraBuild, JsonCitraBuild>(MemberList.Destination);
+				cfg.CreateMap<NewCitraBuild, CitraBuild>(MemberList.Source);
+			});
+
+			config.AssertConfigurationIsValid();
+
+			return config.CreateMapper();
 		}
 
 		/// <summary>
@@ -39,16 +56,15 @@ namespace Janitra.Api.Controllers
 		[HttpGet("list")]
 		public async Task<JsonCitraBuild[]> List([FromQuery] bool includeInactive = false)
 		{
-			return await _context.CitraBuilds.OrderByDescending(c => c.CitraBuildId).Select(c => new JsonCitraBuild
-			{
-				CitraBuildId = c.CitraBuildId,
-				GitHash = c.GitHash,
-				DateAdded = c.DateAdded,
-				ActivelyTesting = c.ActivelyTesting,
-				WindowsUrl = c.WindowsUrl,
-				LinuxUrl = c.LinuxUrl,
-				OsxUrl = c.OsxUrl
-			}).ToArrayAsync();
+			IQueryable<CitraBuild> query = _context.CitraBuilds
+				.OrderByDescending(c => c.CitraBuildId);
+
+			if (!includeInactive)
+				query = query.Where(cb => cb.ActivelyTesting);
+
+			return await query
+				.Select(c => _mapper.Map<JsonCitraBuild>(c))
+				.ToArrayAsync();
 		}
 
 		/// <summary>
@@ -59,19 +75,13 @@ namespace Janitra.Api.Controllers
 		/// </remarks>
 		[Authorize(Roles = "Developer")]
 		[HttpPost("add")]
-		public async Task Add([FromBody] NewCitraBuild build)
+		public async Task Add([FromBody] NewCitraBuild newBuild)
 		{
-			await _context.CitraBuilds.AddAsync(new CitraBuild
-			{
-				AddedByUserId = _currentUser.User.UserId,
-				ActivelyTesting = true,
-				DateAdded = DateTimeOffset.UtcNow,
+			var build = _mapper.Map<CitraBuild>(newBuild);
+			build.AddedByUser = _currentUser.User;
+			build.DateAdded = DateTimeOffset.UtcNow;
 
-				GitHash = build.GitHash,
-				LinuxUrl = build.LinuxUrl,
-				OsxUrl = build.OsxUrl,
-				WindowsUrl = build.WindowsUrl
-			});
+			await _context.CitraBuilds.AddAsync(build);
 			await _context.SaveChangesAsync();
 		}
 
