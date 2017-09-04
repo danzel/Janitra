@@ -33,6 +33,8 @@ namespace Janitra.Data.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     ActivelyTesting = table.Column<bool>(type: "bit", nullable: false),
                     AddedByUserId = table.Column<int>(type: "int", nullable: false),
+                    BuildNotes = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BuildType = table.Column<int>(type: "int", nullable: false),
                     DateAdded = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     GitHash = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     LinuxUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -141,7 +143,8 @@ namespace Janitra.Data.Migrations
                     JanitraBotId = table.Column<int>(type: "int", nullable: false),
                     LogUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ReportedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    ScreenshotUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ScreenshotBottomUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ScreenshotTopUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     TestDefinitionId = table.Column<int>(type: "int", nullable: false),
                     TestResultType = table.Column<int>(type: "int", nullable: false)
                 },

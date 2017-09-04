@@ -30,6 +30,11 @@ namespace Janitra.Data.Migrations
 
                     b.Property<int>("AddedByUserId");
 
+                    b.Property<string>("BuildNotes")
+                        .IsRequired();
+
+                    b.Property<int>("BuildType");
+
                     b.Property<DateTimeOffset>("DateAdded");
 
                     b.Property<string>("GitHash");
@@ -128,7 +133,10 @@ namespace Janitra.Data.Migrations
 
                     b.Property<DateTimeOffset>("ReportedAt");
 
-                    b.Property<string>("ScreenshotUrl")
+                    b.Property<string>("ScreenshotBottomUrl")
+                        .IsRequired();
+
+                    b.Property<string>("ScreenshotTopUrl")
                         .IsRequired();
 
                     b.Property<int>("TestDefinitionId");

@@ -12,7 +12,7 @@ using System;
 namespace Janitra.Data.Migrations
 {
     [DbContext(typeof(JanitraContext))]
-    [Migration("20170902210738_InitialMigration")]
+    [Migration("20170904091707_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -30,6 +30,11 @@ namespace Janitra.Data.Migrations
                     b.Property<bool>("ActivelyTesting");
 
                     b.Property<int>("AddedByUserId");
+
+                    b.Property<string>("BuildNotes")
+                        .IsRequired();
+
+                    b.Property<int>("BuildType");
 
                     b.Property<DateTimeOffset>("DateAdded");
 
@@ -129,7 +134,10 @@ namespace Janitra.Data.Migrations
 
                     b.Property<DateTimeOffset>("ReportedAt");
 
-                    b.Property<string>("ScreenshotUrl")
+                    b.Property<string>("ScreenshotBottomUrl")
+                        .IsRequired();
+
+                    b.Property<string>("ScreenshotTopUrl")
                         .IsRequired();
 
                     b.Property<int>("TestDefinitionId");

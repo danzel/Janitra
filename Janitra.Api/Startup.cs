@@ -45,6 +45,7 @@ namespace Janitra.Api
 				var commentsFile = Path.Combine(baseDirectory, commentsFileName);
 
 				c.AddSecurityDefinition("Bearer", new ApiKeyScheme { Type = "apiKey", Name = "Authorization", In = "header", Description = "Call /oauth/github then put the token in here as \"Bearer .......\"" });
+				c.DescribeAllEnumsAsStrings();
 				c.IncludeXmlComments(commentsFile);
 				c.SwaggerDoc("v1", new Info { Title = "Janitra API", Version = "v1" });
 			});

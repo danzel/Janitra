@@ -126,6 +126,9 @@ namespace Janitra.Api.Controllers
 			[Required]
 			public string TestName { get; set; }
 
+			/// <summary>
+			/// Url the movie can be downloaded from
+			/// </summary>
 			[Required]
 			public string MovieUrl { get; set; }
 
@@ -140,6 +143,7 @@ namespace Janitra.Api.Controllers
 			[Required]
 			public string AddedByUserName { get; set; }
 
+			[Required]
 			public JsonTestRom TestRom { get; set; }
 		}
 
