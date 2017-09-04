@@ -17,7 +17,9 @@ namespace Janitra.Data.Models
 		[Required]
 		public string LogUrl { get; set; }
 		[Required]
-		public string ScreenshotUrl { get; set; }
+		public string ScreenshotTopUrl { get; set; }
+		[Required]
+		public string ScreenshotBottomUrl { get; set; }
 
 		public TestResultType TestResultType { get; set; }
 

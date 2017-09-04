@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Janitra.Data.Models
+﻿namespace Janitra.Data.Models
 {
     public enum TestResultType
     {

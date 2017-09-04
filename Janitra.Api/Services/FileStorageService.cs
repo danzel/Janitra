@@ -13,6 +13,10 @@ namespace Janitra.Api.Services
 		/// Save the given movie to online storage and return the URL
 		/// </summary>
 		Task<string> StoreMovie(byte[] movieBytes);
+
+		Task<string> StoreLog(byte[] logBytes);
+
+		Task<string> StoreScreenshot(byte[] screenshotBytes);
 	}
 
 	/// <summary>
@@ -26,6 +30,16 @@ namespace Janitra.Api.Services
 		}
 
 		public Task<string> StoreMovie(byte[] movieBytes)
+		{
+			return Task.FromResult("http://example.org");
+		}
+
+		public Task<string> StoreLog(byte[] logBytes)
+		{
+			return Task.FromResult("http://example.org");
+		}
+
+		public Task<string> StoreScreenshot(byte[] screenshotBytes)
 		{
 			return Task.FromResult("http://example.org");
 		}
