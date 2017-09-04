@@ -17,6 +17,11 @@ namespace Janitra.Data.Models
 		/// </summary>
 		public string GitHash { get; set; }
 
+		public BuildType BuildType { get; set; }
+
+		[Required(AllowEmptyStrings = true)]
+		public string BuildNotes { get; set; }
+
 		public DateTimeOffset DateAdded { get; set; }
 
 		/// <summary>
@@ -28,10 +33,12 @@ namespace Janitra.Data.Models
 		/// Zip file location of the build for windows
 		/// </summary>
 		public string WindowsUrl { get; set; }
+
 		/// <summary>
 		/// TarXz file location of the build for linux
 		/// </summary>
 		public string LinuxUrl { get; set; }
+
 		/// <summary>
 		/// TarGz file location of the build for Mac OS X
 		/// </summary>
@@ -44,6 +51,7 @@ namespace Janitra.Data.Models
 
 		//Navigation Fields
 		public User AddedByUser { get; set; }
+
 		public ICollection<TestResult> TestResults { get; set; }
 	}
 }

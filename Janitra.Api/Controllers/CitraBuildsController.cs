@@ -89,6 +89,8 @@ namespace Janitra.Api.Controllers
 		{
 			public int CitraBuildId { get; set; }
 			public string GitHash { get; set; }
+			public BuildType BuildType { get; set; }
+			public string BuildNotes { get; set; }
 			public DateTimeOffset DateAdded { get; set; }
 			public bool ActivelyTesting { get; set; }
 			public string WindowsUrl { get; set; }
@@ -99,6 +101,8 @@ namespace Janitra.Api.Controllers
 		public class NewCitraBuild
 		{
 			public string GitHash { get; set; }
+			public BuildType BuildType { get; set; }
+			public string BuildNotes { get; set; }
 
 			public string WindowsUrl { get; set; }
 			public string LinuxUrl { get; set; }
