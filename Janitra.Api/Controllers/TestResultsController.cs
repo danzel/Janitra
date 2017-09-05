@@ -15,6 +15,7 @@ namespace Janitra.Api.Controllers
 	/// <summary>
 	/// Responsible for managing Test Results
 	/// </summary>
+	[Route("test-results")]
 	public class TestResultsController : Controller
 	{
 		private readonly JanitraContext _context;
@@ -96,11 +97,15 @@ namespace Janitra.Api.Controllers
 
 		public class JsonTestResult
 		{
+			[Required]
 			public int TestResultId { get; set; }
 
+			[Required]
 			public int CitraBuildId { get; set; }
+			[Required]
 			public int TestDefinitionId { get; set; }
 
+			[Required]
 			public DateTimeOffset ReportedAt { get; set; }
 
 			[Required]
@@ -110,13 +115,17 @@ namespace Janitra.Api.Controllers
 			[Required]
 			public string ScreenshotBottomUrl { get; set; }
 
+			[Required]
 			public TestResultType TestResultType { get; set; }
 		}
 
 		public class NewTestResult
 		{
+			[Required]
 			public int CitraBuildId { get; set; }
+			[Required]
 			public int JanitraBotId { get; set; }
+			[Required]
 			public int TestDefinitionId { get; set; }
 
 			[Required]
@@ -126,6 +135,7 @@ namespace Janitra.Api.Controllers
 			[Required]
 			public byte[] ScreenshotBottom { get; set; }
 
+			[Required]
 			public TestResultType TestResultType { get; set; }
 		}
 	}

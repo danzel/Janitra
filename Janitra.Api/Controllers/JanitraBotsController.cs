@@ -90,12 +90,15 @@ namespace Janitra.Api.Controllers
 
 		public class JsonJanitraBot
 		{
+			[Required]
 			public int JanitraBotId { get; set; }
 			[Required]
 			public string Name { get; set; }
 			[Required]
 			public string HardwareDetails { get; set; }
+			[Required]
 			public OsType Os { get; set; }
+			[Required]
 			public int AddedByUserId { get; set; }
 			[Required]
 			public string AddedByUserName { get; set; }
@@ -107,12 +110,14 @@ namespace Janitra.Api.Controllers
 			public string Name { get; set; }
 			[Required]
 			public string HardwareDetails { get; set; }
+			[Required]
 			public OsType Os { get; set; }
 		}
 
 
 		public class AddBotResult
 		{
+			[Required]
 			public int JanitraBotId { get; set; }
 			[Required]
 			public string AccessKey { get; set; }

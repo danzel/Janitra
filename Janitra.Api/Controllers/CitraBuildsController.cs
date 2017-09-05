@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -87,11 +88,17 @@ namespace Janitra.Api.Controllers
 
 		public class JsonCitraBuild
 		{
+			[Required]
 			public int CitraBuildId { get; set; }
+			[Required]
 			public string GitHash { get; set; }
+			[Required]
 			public BuildType BuildType { get; set; }
+			[Required]
 			public string BuildNotes { get; set; }
+			[Required]
 			public DateTimeOffset DateAdded { get; set; }
+			[Required]
 			public bool ActivelyTesting { get; set; }
 			public string WindowsUrl { get; set; }
 			public string LinuxUrl { get; set; }
@@ -100,8 +107,11 @@ namespace Janitra.Api.Controllers
 
 		public class NewCitraBuild
 		{
+			[Required]
 			public string GitHash { get; set; }
+			[Required]
 			public BuildType BuildType { get; set; }
+			[Required]
 			public string BuildNotes { get; set; }
 
 			public string WindowsUrl { get; set; }

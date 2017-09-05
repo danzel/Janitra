@@ -17,7 +17,7 @@ namespace Janitra.Api.Controllers
 	/// Responsible for managing the Test Definitions
 	/// </summary>
 	[Route("test-definitions")]
-	public class TestDefinitionController : Controller
+	public class TestDefinitionsController : Controller
 	{
 		private readonly JanitraContext _context;
 		private readonly CurrentUser _currentUser;
@@ -27,7 +27,7 @@ namespace Janitra.Api.Controllers
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public TestDefinitionController(JanitraContext context, CurrentUser currentUser, IFileStorageService fileStorage)
+		public TestDefinitionsController(JanitraContext context, CurrentUser currentUser, IFileStorageService fileStorage)
 		{
 			_context = context;
 			_currentUser = currentUser;
@@ -121,6 +121,7 @@ namespace Janitra.Api.Controllers
 
 		public class JsonTestDefinition
 		{
+			[Required]
 			public int TestDefinitionId { get; set; }
 
 			[Required]
@@ -135,9 +136,12 @@ namespace Janitra.Api.Controllers
 			[Required]
 			public string MovieSha256 { get; set; }
 
+			[Required]
 			public bool ActivelyTesting { get; set; }
 
+			[Required]
 			public DateTimeOffset AddedAt { get; set; }
+			[Required]
 			public int AddedByUserId { get; set; }
 
 			[Required]
@@ -149,7 +153,9 @@ namespace Janitra.Api.Controllers
 
 		public class JsonTestRom
 		{
+			[Required]
 			public int TestRomId { get; set; }
+			[Required]
 			public RomType RomType { get; set; }
 
 			public string FileName { get; set; }
@@ -160,6 +166,7 @@ namespace Janitra.Api.Controllers
 
 			public string CodeUrl { get; set; }
 
+			[Required]
 			public int AddedByUserId { get; set; }
 
 			[Required]
@@ -188,6 +195,7 @@ namespace Janitra.Api.Controllers
 
 		public class NewTestRom
 		{
+			[Required]
 			public RomType RomType { get; set; }
 
 			[Required]
@@ -205,6 +213,7 @@ namespace Janitra.Api.Controllers
 
 		public class AddTestResult
 		{
+			[Required]
 			public int TestDefinitionId { get; set; }
 		}
 	}
