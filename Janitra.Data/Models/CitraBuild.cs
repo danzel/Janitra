@@ -15,6 +15,7 @@ namespace Janitra.Data.Models
 		/// <summary>
 		/// The git hash of this build (if known)
 		/// </summary>
+		[Required]
 		public string GitHash { get; set; }
 
 		public BuildType BuildType { get; set; }
