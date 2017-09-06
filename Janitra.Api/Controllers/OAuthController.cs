@@ -141,7 +141,10 @@ namespace Janitra.Api.Controllers
 				new Claim(JwtRegisteredClaimNames.Sub, user.UserId.ToString()),
 				new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
 			};
+
 			//TODO: Add more claims based on their user level
+			if (user.UserLevel == UserLevel.Developer)
+				claims.Add(new Claim(ClaimTypes.Role, "Developer"));
 
 			var token = new JwtSecurityToken(
 				issuer: _options.Value.JwtIssuer,
