@@ -80,21 +80,28 @@ namespace Janitra.Api.Controllers
 		/// <summary>
 		/// Submit a test result
 		/// </summary>
-		[Authorize(Roles = "JanitraBot")]
 		[HttpPost("add")]
-		public async Task AddResult([FromBody] NewTestResult testResult)
+		public async Task<IActionResult> AddResult([FromBody] NewTestResult testResult)
 		{
+			var bot = await _context.JanitraBots.SingleOrDefaultAsync(b => b.JanitraBotId == testResult.JanitraBotId);
+			if (bot == null)
+				return Forbid("No bot matches that JanitraBotId");
+			if (!CryptoHelper.Crypto.VerifyHashedPassword(bot.AccessKey, testResult.AccessKey))
+				return Forbid("The given AccessKey does not match");
+
 			var result = _mapper.Map<TestResult>(testResult);
 
 			result.LogUrl = await _fileStorage.StoreLog(testResult.Log);
 			result.ScreenshotTopUrl = await _fileStorage.StoreScreenshot(testResult.ScreenshotTop);
 			result.ScreenshotBottomUrl = await _fileStorage.StoreScreenshot(testResult.ScreenshotBottom);
 
-			result.JanitraBot = _currentUser.JanitraBot;
+			result.JanitraBot = bot;
 			result.ReportedAt = DateTimeOffset.UtcNow;
 
+			//TODO: Do we need to check for duplicate results?
 			await _context.AddAsync(result);
 			await _context.SaveChangesAsync();
+			return Ok();
 		}
 
 		public class JsonTestResult
@@ -126,6 +133,12 @@ namespace Janitra.Api.Controllers
 
 		public class NewTestResult
 		{
+			/// <summary>
+			/// JanitraBot Token
+			/// </summary>
+			[Required]
+			public string AccessKey { get; set; }
+
 			[Required]
 			public int CitraBuildId { get; set; }
 			[Required]

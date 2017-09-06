@@ -9,7 +9,6 @@ namespace Janitra.Api.Services
 	public class CurrentUser
 	{
 		public User User { get; }
-		public JanitraBot JanitraBot { get; }
 
 		public CurrentUser()
 		{
@@ -18,11 +17,6 @@ namespace Janitra.Api.Services
 		public CurrentUser(User user)
 		{
 			User = user;
-		}
-
-		public CurrentUser(JanitraBot janitraBot)
-		{
-			JanitraBot = janitraBot;
 		}
 	}
 
@@ -40,11 +34,7 @@ namespace Janitra.Api.Services
 
 				var context = s.GetService<IHttpContextAccessor>().HttpContext;
 				if (context != null && context.User.Identity.IsAuthenticated)
-				{
-					if (context.User.IsInRole("JanitraBot"))
-						return new CurrentUser(janitraContext.JanitraBots.Single(u => u.JanitraBotId == int.Parse(context.User.Identity.Name)));
 					return new CurrentUser(janitraContext.Users.Single(u => u.UserId == int.Parse(context.User.Identity.Name)));
-				}
 				return new CurrentUser();
 			}));
 		}
