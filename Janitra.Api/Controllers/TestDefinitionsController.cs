@@ -76,7 +76,7 @@ namespace Janitra.Api.Controllers
 		[Authorize(Roles = "Developer")]
 		[HttpPost("add")]
 		[ProducesResponseType(typeof(AddTestResult), StatusCodes.Status200OK)]
-		public async Task<IActionResult> Add(NewTestDefinition newTest)
+		public async Task<IActionResult> Add([FromBody] NewTestDefinition newTest)
 		{
 			//newTestRom xor TestRomId
 			if (newTest.TestRomId.HasValue != (newTest.NewTestRom != null))

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
+using System.Security.Claims;
 using System.Text;
 using Janitra.Api.Controllers;
 using Janitra.Api.Services;
@@ -62,7 +63,7 @@ namespace Janitra.Api
 						ValidIssuer = Configuration["OAuth:JwtIssuer"],
 						ValidAudience = Configuration["OAuth:JwtIssuer"],
 						IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["OAuth:JwtKey"])),
-						NameClaimType = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"
+						NameClaimType = ClaimTypes.NameIdentifier
 					};
 				});
 			services.AddDistributedMemoryCache();
