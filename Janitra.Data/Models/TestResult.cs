@@ -23,6 +23,8 @@ namespace Janitra.Data.Models
 
 		public TestResultType TestResultType { get; set; }
 
+		public TimeSpan TimeTaken { get; set; }
+
 		//Navigation Fields
 
 		public CitraBuild CitraBuild { get; set; }

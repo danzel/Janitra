@@ -39,12 +39,14 @@ namespace Janitra.Api.Controllers
 		{
 			var config = new MapperConfiguration(cfg =>
 			{
-				cfg.CreateMap<TestResult, JsonTestResult>(MemberList.Destination);
+				cfg.CreateMap<TestResult, JsonTestResult>(MemberList.Destination)
+					.ForMember(jtr => jtr.TimeTakenSeconds, o => o.ResolveUsing(tr => tr.TimeTaken.TotalSeconds));
 
 				cfg.CreateMap<NewTestResult, TestResult>(MemberList.Source)
 					.ForSourceMember(ntr => ntr.Log, o => o.Ignore())
 					.ForSourceMember(ntr => ntr.ScreenshotTop, o => o.Ignore())
-					.ForSourceMember(ntr => ntr.ScreenshotBottom, o => o.Ignore());
+					.ForSourceMember(ntr => ntr.ScreenshotBottom, o => o.Ignore())
+					.ForMember(tr => tr.TimeTaken, o => o.ResolveUsing(ntr => TimeSpan.FromSeconds(ntr.TimeTakenSeconds)));
 			});
 
 			config.AssertConfigurationIsValid();
@@ -117,6 +119,9 @@ namespace Janitra.Api.Controllers
 
 			[Required]
 			public TestResultType TestResultType { get; set; }
+
+			[Required]
+			public double TimeTakenSeconds { get; set; }
 		}
 
 		public class NewTestResult
@@ -137,6 +142,9 @@ namespace Janitra.Api.Controllers
 
 			[Required]
 			public TestResultType TestResultType { get; set; }
+
+			[Required]
+			public double TimeTakenSeconds { get; set; }
 		}
 	}
 }
