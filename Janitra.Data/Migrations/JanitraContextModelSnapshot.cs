@@ -37,7 +37,8 @@ namespace Janitra.Data.Migrations
 
                     b.Property<DateTimeOffset>("DateAdded");
 
-                    b.Property<string>("GitHash");
+                    b.Property<string>("GitHash")
+                        .IsRequired();
 
                     b.Property<string>("LinuxUrl");
 
@@ -50,8 +51,7 @@ namespace Janitra.Data.Migrations
                     b.HasIndex("AddedByUserId");
 
                     b.HasIndex("GitHash")
-                        .IsUnique()
-                        .HasFilter("[GitHash] IS NOT NULL");
+                        .IsUnique();
 
                     b.ToTable("CitraBuilds");
                 });
@@ -142,6 +142,8 @@ namespace Janitra.Data.Migrations
                     b.Property<int>("TestDefinitionId");
 
                     b.Property<int>("TestResultType");
+
+                    b.Property<TimeSpan>("TimeTaken");
 
                     b.HasKey("TestResultId");
 

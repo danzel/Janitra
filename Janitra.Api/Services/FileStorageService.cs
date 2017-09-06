@@ -1,4 +1,6 @@
 ﻿using System.Threading.Tasks;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace Janitra.Api.Services
 {
@@ -42,6 +44,55 @@ namespace Janitra.Api.Services
 		public Task<string> StoreScreenshot(byte[] screenshotBytes)
 		{
 			return Task.FromResult("http://example.org");
+		}
+	}
+	
+	internal class AzureBlobStorageService : IFileStorageService
+	{
+		private readonly CloudBlobClient _client;
+		private readonly string _baseUrl;
+
+		public AzureBlobStorageService(string connectionString)
+		{
+			var account = CloudStorageAccount.Parse(connectionString);
+			_client = account.CreateCloudBlobClient();
+
+			_baseUrl = "https://" + account.Credentials.AccountName + ".blob.core.windows.net/";
+		}
+
+		private async Task<string> Store(string containerName, byte[] bytes)
+		{
+			var container = _client.GetContainerReference(containerName);
+			await container.CreateIfNotExistsAsync(BlobContainerPublicAccessType.Blob, null, null);
+
+			var fileName = SHA256Hash.HashBytes(bytes);
+			var blob = container.GetBlockBlobReference(fileName);
+
+			//TODO LOG AROUND THIS
+			if (!await blob.ExistsAsync())
+				await blob.UploadFromByteArrayAsync(bytes, 0, bytes.Length);
+
+			return _baseUrl + containerName + "/" + fileName;
+		}
+
+		public async Task<string> StoreTestRom(byte[] romBytes)
+		{
+			return await Store("testroms", romBytes);
+		}
+
+		public async Task<string> StoreMovie(byte[] movieBytes)
+		{
+			return await Store("movies", movieBytes);
+		}
+
+		public async Task<string> StoreLog(byte[] logBytes)
+		{
+			return await Store("logs", logBytes);
+		}
+
+		public async Task<string> StoreScreenshot(byte[] screenshotBytes)
+		{
+			return await Store("screenshots", screenshotBytes);
 		}
 	}
 }

@@ -46,7 +46,9 @@ namespace Janitra.Api.Controllers
 					.ForSourceMember(ntr => ntr.Log, o => o.Ignore())
 					.ForSourceMember(ntr => ntr.ScreenshotTop, o => o.Ignore())
 					.ForSourceMember(ntr => ntr.ScreenshotBottom, o => o.Ignore())
-					.ForMember(tr => tr.TimeTaken, o => o.ResolveUsing(ntr => TimeSpan.FromSeconds(ntr.TimeTakenSeconds)));
+					.ForMember(tr => tr.TimeTaken, o => o.ResolveUsing(ntr => TimeSpan.FromSeconds(ntr.TimeTakenSeconds)))
+					.ForSourceMember(ntr => ntr.AccessKey, o => o.Ignore())
+					.ForSourceMember(ntr => ntr.TimeTakenSeconds, o => o.Ignore());
 			});
 
 			config.AssertConfigurationIsValid();

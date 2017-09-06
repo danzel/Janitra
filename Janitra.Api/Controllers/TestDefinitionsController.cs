@@ -50,6 +50,10 @@ namespace Janitra.Api.Controllers
 					.ForSourceMember(ntd => ntd.MovieBytes, o => o.Ignore())
 					.ForSourceMember(ntd => ntd.NewTestRom, o => o.Ignore())
 					.ForSourceMember(ntd => ntd.TestRomId, o => o.Ignore());
+
+				cfg.CreateMap<NewTestRom, TestRom>(MemberList.Source)
+					.ForMember(tr => tr.ReadableName, o => o.MapFrom(ntr => ntr.Name))
+					.ForSourceMember(ntr => ntr.RomBytes, o => o.Ignore());
 			});
 
 			config.AssertConfigurationIsValid();
@@ -79,7 +83,7 @@ namespace Janitra.Api.Controllers
 		public async Task<IActionResult> Add([FromBody] NewTestDefinition newTest)
 		{
 			//newTestRom xor TestRomId
-			if (newTest.TestRomId.HasValue != (newTest.NewTestRom != null))
+			if (newTest.TestRomId.HasValue == (newTest.NewTestRom != null))
 				return BadRequest("Exactly one of TestRomId and NewTestRom must be set");
 
 			var test = _mapper.Map<TestDefinition>(newTest);
@@ -107,6 +111,7 @@ namespace Janitra.Api.Controllers
 			test.MovieSha256 = SHA256Hash.HashBytes(newTest.MovieBytes);
 
 			//Add unmapped fields
+			test.ActivelyTesting = true;
 			test.AddedByUser = _currentUser.User;
 			test.AddedAt = DateTimeOffset.UtcNow;
 

@@ -79,6 +79,7 @@ namespace Janitra.Api.Controllers
 		public async Task Add([FromBody] NewCitraBuild newBuild)
 		{
 			var build = _mapper.Map<CitraBuild>(newBuild);
+			build.ActivelyTesting = true;
 			build.AddedByUser = _currentUser.User;
 			build.DateAdded = DateTimeOffset.UtcNow;
 

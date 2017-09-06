@@ -36,7 +36,7 @@ namespace Janitra.Data.Migrations
                     BuildNotes = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     BuildType = table.Column<int>(type: "int", nullable: false),
                     DateAdded = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    GitHash = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    GitHash = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     LinuxUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     OsxUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     WindowsUrl = table.Column<string>(type: "nvarchar(max)", nullable: true)
@@ -146,7 +146,8 @@ namespace Janitra.Data.Migrations
                     ScreenshotBottomUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ScreenshotTopUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     TestDefinitionId = table.Column<int>(type: "int", nullable: false),
-                    TestResultType = table.Column<int>(type: "int", nullable: false)
+                    TestResultType = table.Column<int>(type: "int", nullable: false),
+                    TimeTaken = table.Column<TimeSpan>(type: "time", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -180,8 +181,7 @@ namespace Janitra.Data.Migrations
                 name: "IX_CitraBuilds_GitHash",
                 table: "CitraBuilds",
                 column: "GitHash",
-                unique: true,
-                filter: "[GitHash] IS NOT NULL");
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_JanitraBots_AddedByUserId",

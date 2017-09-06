@@ -35,7 +35,9 @@ namespace Janitra.Api
 			services.AddDbContext<JanitraContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Janitra")));
 			services.Add(ServiceDescriptor.Transient<UserRepository, UserRepository>());
 			services.AddCurrentUserService();
-			services.AddSingleton<IFileStorageService, NullFileStorageService>();
+
+			services.AddSingleton<IFileStorageService>(new AzureBlobStorageService(Configuration.GetConnectionString("AzureStorage")));
+			//services.AddSingleton<IFileStorageService, NullFileStorageService>();
 
 			services.Configure<OAuthControllerOptions>(Configuration.GetSection("OAuth"));
 
