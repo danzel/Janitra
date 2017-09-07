@@ -60,12 +60,14 @@ namespace Janitra.Api.Services
 			_baseUrl = "https://" + account.Credentials.AccountName + ".blob.core.windows.net/";
 		}
 
-		private async Task<string> Store(string containerName, byte[] bytes)
+		private async Task<string> Store(string containerName, byte[] bytes, string extension = null)
 		{
 			var container = _client.GetContainerReference(containerName);
 			await container.CreateIfNotExistsAsync(BlobContainerPublicAccessType.Blob, null, null);
 
 			var fileName = SHA256Hash.HashBytes(bytes);
+			if (extension != null)
+				fileName += extension;
 			var blob = container.GetBlockBlobReference(fileName);
 
 			//TODO LOG AROUND THIS
@@ -87,12 +89,12 @@ namespace Janitra.Api.Services
 
 		public async Task<string> StoreLog(byte[] logBytes)
 		{
-			return await Store("logs", logBytes);
+			return await Store("logs", logBytes, ".txt");
 		}
 
 		public async Task<string> StoreScreenshot(byte[] screenshotBytes)
 		{
-			return await Store("screenshots", screenshotBytes);
+			return await Store("screenshots", screenshotBytes, ".png");
 		}
 	}
 }
