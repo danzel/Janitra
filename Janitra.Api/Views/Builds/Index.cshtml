@@ -18,7 +18,7 @@
 <table class="table" style="width: 100%">
     <thead>
     <tr>
-        <th>Build Id</th>
+        <th>Id</th>
         <th>Git Hash</th>
         <th>Build Type</th>
         <th>Notes</th>
@@ -28,8 +28,8 @@
     <tbody>
     @foreach (var build in Model)
     {
-        <tr style="cursor: pointer">
-            <td>@build.CitraBuildId</td>
+        <tr>
+            <td><a href="/builds/view/@build.CitraBuildId">@build.CitraBuildId</a></td>
             <td>@build.GitHash</td>
             <td>@build.BuildType</td>
             <td>@build.BuildNotes</td>

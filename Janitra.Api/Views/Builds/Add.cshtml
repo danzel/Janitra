@@ -1,0 +1,116 @@
+﻿@model Janitra.Api.Controllers.AddBuildViewModel
+@{
+    ViewData["Title"] = "Add Build";
+}
+
+<section class="hero is-primary">
+    <div class="hero-body">
+        <div class="container">
+            <h1 class="title">
+                Add a new Citra Build
+            </h1>
+        </div>
+    </div>
+</section>
+<section class="section">
+    <form asp-action="Add" enctype="multipart/form-data">
+        <div class="field is-horizontal">
+            <div class="field-label">
+                <label class="label">Git Hash</label>
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <input class="input" type="text" asp-for="GitHash"/>
+                    <span asp-validation-for="GitHash" class="help is-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="field is-horizontal">
+            <div class="field-label">
+                <label class="label">Commit Time<br/> (In your local time)</label>
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <input class="input" type="datetime-local" asp-for="CommitTime"/>
+                    <span asp-validation-for="CommitTime" class="help is-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="field is-horizontal">
+            <div class="field-label">
+                <label class="label">Build Type</label>
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <select asp-for="BuildType" asp-items="Html.GetEnumSelectList<Janitra.Data.Models.BuildType>()">
+                        <option selected="selected" value="">Please select a build type</option>
+                    </select>
+                    <span asp-validation-for="BuildType" class="help is-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="field is-horizontal">
+            <div class="field-label">
+                <label class="label">Notes</label>
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <textarea class="textarea" asp-for="BuildNotes"></textarea>
+                    <span asp-validation-for="BuildNotes" class="help is-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="field is-horizontal">
+            <div class="field-label">
+                <label class="label">Windows URL</label>
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <input class="input" type="text" asp-for="WindowsUrl"/>
+                    <span asp-validation-for="WindowsUrl" class="help is-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="field is-horizontal">
+            <div class="field-label">
+                <label class="label">Linux URL</label>
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <input class="input" type="text" asp-for="LinuxUrl"/>
+                    <span asp-validation-for="LinuxUrl" class="help is-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="field is-horizontal">
+            <div class="field-label">
+                <label class="label">macOS URL</label>
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <input class="input" type="text" asp-for="OsxUrl"/>
+                    <span asp-validation-for="OsxUrl" class="help is-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="field is-horizontal">
+            <div class="field-label">
+                <!-- Left empty for spacing -->
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <div class="control">
+                        <button type="submit" class="button is-primary">Add Test</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</section>

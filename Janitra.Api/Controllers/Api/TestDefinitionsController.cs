@@ -3,7 +3,6 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using Janitra.Api.Services;
 using Janitra.Data;
 using Janitra.Data.Models;
 using Microsoft.AspNetCore.Mvc;

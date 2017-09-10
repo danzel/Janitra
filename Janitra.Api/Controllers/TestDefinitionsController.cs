@@ -19,32 +19,14 @@ namespace Janitra.Api.Controllers
 		private readonly JanitraContext _context;
 		private readonly CurrentUser _currentUser;
 		private readonly IFileStorageService _fileStorageService;
-		private readonly IMapper _mapper;
 
 		public TestDefinitionsController(JanitraContext context, IFileStorageService fileStorageService, CurrentUser currentUser)
 		{
 			_context = context;
 			_fileStorageService = fileStorageService;
 			_currentUser = currentUser;
-
-			_mapper = CreateMapper();
 		}
-
-		private IMapper CreateMapper()
-		{
-			var config = new MapperConfiguration(cfg =>
-			{
-				cfg.CreateMap<AddTestModel, TestDefinition>(MemberList.Source)
-					.ForSourceMember(atm => atm.MovieFile, o => o.Ignore())
-					.ForSourceMember(atm => atm.RomFile, o => o.Ignore())
-					.ForSourceMember(atm => atm.CodeUrl, o => o.Ignore());
-			});
-
-			config.AssertConfigurationIsValid();
-
-			return config.CreateMapper();
-		}
-
+		
 		public async Task<IActionResult> Index()
 		{
 			return View(await _context.TestDefinitions.Include(td => td.TestRom).Where(b => b.ActivelyTesting).OrderBy(b => b.TestDefinitionId).ToArrayAsync());
@@ -65,7 +47,7 @@ namespace Janitra.Api.Controllers
 		[HttpPost]
 		[Authorize(Roles = "Developer")]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Add(AddTestModel test)
+		public async Task<IActionResult> Add(AddTestViewModel test)
 		{
 			if (ModelState.IsValid)
 			{
@@ -107,7 +89,7 @@ namespace Janitra.Api.Controllers
 		}
 	}
 
-	public class AddTestModel
+	public class AddTestViewModel
 	{
 		[Required]
 		public string TestName { get; set; }

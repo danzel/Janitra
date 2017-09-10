@@ -1,0 +1,50 @@
+﻿@model Janitra.Data.Models.CitraBuild
+@{
+    ViewData["Title"] = "View Build";
+}
+<section class="hero is-primary">
+    <div class="hero-body">
+        <div class="container">
+            <h1 class="title">
+                Build @Model.CitraBuildId <span class="tag">@Model.BuildType</span>
+            </h1>
+        </div>
+    </div>
+</section>
+<section class="section">
+    Git Hash: <a target="_blank" href=@("https://github.com/citra-emu/citra/commit/" + Model.GitHash)>@Model.GitHash</a><br/>
+    Committed At: @Model.CommitTime.ToString("yyyy-MM-dd")<br/>
+
+    Notes: @Model.BuildNotes<br/>
+
+    Download
+    @if (!string.IsNullOrEmpty(Model.WindowsUrl))
+    {
+        <a href=@Model.WindowsUrl>
+            <span class="icon">
+                <i class="fa fa-windows"></i>
+            </span>
+        </a>
+    }
+    @if (!string.IsNullOrEmpty(Model.LinuxUrl))
+    {
+        <a href=@Model.LinuxUrl>
+            <span class="icon">
+                <i class="fa fa-linux"></i>
+            </span>
+        </a>
+    }
+    @if (!string.IsNullOrEmpty(Model.OsxUrl))
+    {
+        <a href=@Model.OsxUrl>
+            <span class="icon">
+                <i class="fa fa-apple"></i>
+            </span>
+        </a>
+    }
+    TODO: Some some test results?
+    TODO: Compare links
+</section>
+<section class="section">
+    TODO: List test results here
+</section>

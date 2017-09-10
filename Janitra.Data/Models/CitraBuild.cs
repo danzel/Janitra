@@ -15,7 +15,7 @@ namespace Janitra.Data.Models
 		/// <summary>
 		/// The git hash of this build (if known)
 		/// </summary>
-		[Required]
+		[Required, MinLength(40), MaxLength(40)]
 		public string GitHash { get; set; }
 
 		public DateTimeOffset CommitTime { get; set; }
