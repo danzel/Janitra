@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using Janitra.Api.Services;
 using Janitra.Data.Models;
 using Janitra.Data.Repositories;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -110,9 +112,17 @@ namespace Janitra.Api.Controllers
 
 			var user = await _userRepository.GetOrCreateUser("github", githubUser.id.ToString(), githubUser.login);
 
-			var jwt = IssueJwt(user);
+			var claims = new List<Claim>
+			{
+				new Claim(ClaimTypes.Name, user.UserId.ToString())
+			};
+			if (user.UserLevel == UserLevel.Developer)
+				claims.Add(new Claim(ClaimTypes.Role, "Developer"));
+			var principal = new ClaimsPrincipal(new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme));
 
-			return Redirect(_options.Value.RedirectUrl + jwt);
+			await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+
+			return Redirect("/");
 		}
 
 		/// <summary>
@@ -129,32 +139,6 @@ namespace Janitra.Api.Controllers
 				UserId = _currentUser.User.UserId,
 				Name = _currentUser.User.OAuthName
 			};
-		}
-
-		private string IssueJwt(User user)
-		{
-			var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.Value.JwtKey));
-			var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-			var claims = new List<Claim>
-			{
-				new Claim(JwtRegisteredClaimNames.Sub, user.UserId.ToString()),
-				new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-			};
-
-			//TODO: Add more claims based on their user level
-			if (user.UserLevel == UserLevel.Developer)
-				claims.Add(new Claim(ClaimTypes.Role, "Developer"));
-
-			var token = new JwtSecurityToken(
-				issuer: _options.Value.JwtIssuer,
-				audience: _options.Value.JwtIssuer,
-				claims: claims,
-				expires: DateTime.Now.AddDays(_options.Value.JwtLifetimeDays),
-				signingCredentials: creds
-			);
-
-			return new JwtSecurityTokenHandler().WriteToken(token);
 		}
 
 		private class OAuthAccessToken

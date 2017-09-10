@@ -1,0 +1,84 @@
+﻿@model Janitra.Api.Controllers.AddTestModel
+@{
+    ViewData["Title"] = "Add Test";
+}
+<section class="hero is-primary">
+    <div class="hero-body">
+        <div class="container">
+            <h1 class="title">
+                Add a new Test Definition
+            </h1>
+        </div>
+    </div>
+</section>
+<section class="section">
+    <form asp-action="Add" enctype="multipart/form-data">
+        <div class="field is-horizontal">
+            <div class="field-label">
+                <label class="label">Test Name</label>
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <input class="input" type="text" asp-for="Name"/>
+                </div>
+            </div>
+        </div>
+
+        <div class="field is-horizontal">
+            <div class="field-label">
+                <label class="label">Notes</label>
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <textarea class="textarea" asp-for="Notes"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="field is-horizontal">
+            <div class="field-label">
+                <label class="label">Rom File</label>
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <input class="input" type="file" asp-for="RomFile"/>
+                </div>
+            </div>
+        </div>
+
+        <div class="field is-horizontal">
+            <div class="field-label">
+                <label class="label">Movie File</label>
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <input class="input" type="file" asp-for="MovieFile"/>
+                </div>
+            </div>
+        </div>
+
+        <div class="field is-horizontal">
+            <div class="field-label">
+                <label class="label">Code URL</label>
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <input class="input" type="text" asp-for="CodeUrl"/>
+                </div>
+            </div>
+        </div>
+
+        <div class="field is-horizontal">
+            <div class="field-label">
+                <!-- Left empty for spacing -->
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <div class="control">
+                        <button type="submit" class="button is-primary">Add Test</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</section>

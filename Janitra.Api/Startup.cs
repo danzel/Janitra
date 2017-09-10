@@ -7,6 +7,7 @@ using Janitra.Api.Controllers;
 using Janitra.Api.Services;
 using Janitra.Data;
 using Janitra.Data.Repositories;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -55,19 +56,10 @@ namespace Janitra.Api
 
 			services.AddAuthentication(options =>
 				{
-					options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-					options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+					options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+					options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
 				})
-				.AddJwtBearer(cfg =>
-				{
-					cfg.TokenValidationParameters = new TokenValidationParameters
-					{
-						ValidIssuer = Configuration["OAuth:JwtIssuer"],
-						ValidAudience = Configuration["OAuth:JwtIssuer"],
-						IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["OAuth:JwtKey"])),
-						NameClaimType = ClaimTypes.NameIdentifier
-					};
-				});
+				.AddCookie();
 			services.AddDistributedMemoryCache();
 			services.AddMvc();
 		}
@@ -81,7 +73,7 @@ namespace Janitra.Api
 			}
 
 			app.UseAuthentication();
-			app.UseMvc();
+			app.UseMvc(routes => { routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}"); });
 
 			app.UseSwagger();
 			app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1"); });

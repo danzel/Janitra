@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>@ViewData["Title"] - Janitra</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.5.1/css/bulma.min.css">
+
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="navbar-brand">
+        <a class="navbar-item" href="/">
+            Janitra
+        </a>
+        <!-- TODO: Burger to show the menu on mobile -->
+    </div>
+    <div class="navbar-menu">
+        <div class="navbar-start">
+            <a class="navbar-item" href="/builds">
+                Builds
+            </a>
+            <a class="navbar-item" href="/testdefinitions">
+                Tests
+            </a>
+        </div>
+        <div class="navbar-end">
+            <div class="navbar-item">
+                Login goes here
+            </div>
+        </div>
+    </div>
+</nav>
+@RenderBody()
+
+@RenderSection("Scripts", required: false)
+</body>

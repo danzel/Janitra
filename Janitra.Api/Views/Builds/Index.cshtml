@@ -1,0 +1,40 @@
+﻿@model IEnumerable<Janitra.Data.Models.CitraBuild>
+
+@{
+    ViewData["Title"] = "Builds List";
+}
+<section class="hero is-primary">
+    <div class="hero-body">
+        <div class="container">
+            <h1 class="title">
+                Builds
+            </h1>
+            <h2 class="subtitle">
+                Builds that are being actively tested
+            </h2>
+        </div>
+    </div>
+</section>
+<table class="table" style="width: 100%">
+    <thead>
+    <tr>
+        <th>Build Id</th>
+        <th>Git Hash</th>
+        <th>Build Type</th>
+        <th>Notes</th>
+        <th>Date</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var build in Model)
+    {
+        <tr style="cursor: pointer">
+            <td>@build.CitraBuildId</td>
+            <td>@build.GitHash</td>
+            <td>@build.BuildType</td>
+            <td>@build.BuildNotes</td>
+            <td>@build.CommitTime.ToString("yyyy-MM-dd")</td>
+        </tr>
+    }
+    </tbody>
+</table>
