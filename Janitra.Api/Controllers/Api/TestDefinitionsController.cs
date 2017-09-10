@@ -13,12 +13,12 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace Janitra.Api.Controllers
+namespace Janitra.Api.Controllers.Api
 {
 	/// <summary>
 	/// Responsible for managing the Test Definitions
 	/// </summary>
-	[Route("test-definitions")]
+	[Route("api/test-definitions")]
 	public class TestDefinitionsController : Controller
 	{
 		private readonly JanitraContext _context;
@@ -47,15 +47,6 @@ namespace Janitra.Api.Controllers
 
 				cfg.CreateMap<TestRom, JsonTestRom>(MemberList.Destination)
 					.ForMember(jtr => jtr.AddedByUserName, o => o.MapFrom(tr => tr.AddedByUser.OAuthName));
-
-				cfg.CreateMap<NewTestDefinition, TestDefinition>(MemberList.Source)
-					.ForSourceMember(ntd => ntd.MovieBytes, o => o.Ignore())
-					.ForSourceMember(ntd => ntd.NewTestRom, o => o.Ignore())
-					.ForSourceMember(ntd => ntd.TestRomId, o => o.Ignore());
-
-				cfg.CreateMap<NewTestRom, TestRom>(MemberList.Source)
-					.ForMember(tr => tr.ReadableName, o => o.MapFrom(ntr => ntr.Name))
-					.ForSourceMember(ntr => ntr.RomBytes, o => o.Ignore());
 			});
 
 			config.AssertConfigurationIsValid();
@@ -78,7 +69,7 @@ namespace Janitra.Api.Controllers
 				.Select(t => _mapper.Map<JsonTestDefinition>(t))
 				.ToArrayAsync();
 		}
-
+		/*
 		[Authorize(Roles = "Developer")]
 		[HttpPost("add")]
 		[ProducesResponseType(typeof(AddTestResult), StatusCodes.Status200OK)]
@@ -125,7 +116,7 @@ namespace Janitra.Api.Controllers
 				TestDefinitionId = test.TestDefinitionId
 			});
 		}
-
+		*/
 		public class JsonTestDefinition
 		{
 			[Required]
@@ -165,9 +156,6 @@ namespace Janitra.Api.Controllers
 		{
 			[Required]
 			public int TestRomId { get; set; }
-			[Required]
-			[JsonConverter(typeof(StringEnumConverter))]
-			public RomType RomType { get; set; }
 
 			public string FileName { get; set; }
 			public string RomUrl { get; set; }
@@ -182,51 +170,6 @@ namespace Janitra.Api.Controllers
 
 			[Required]
 			public string AddedByUserName { get; set; }
-		}
-
-		public class NewTestDefinition
-		{
-			[Required]
-			public string TestName { get; set; }
-
-			[Required]
-			public byte[] MovieBytes { get; set; }
-
-			[Required]
-			public string Notes { get; set; }
-
-			//Rom can either be an existing one, or a new one. So either set TestRomId or NewTestRom, not both
-
-			public int? TestRomId { get; set; }
-
-			//This field represents a new HwTest/Homebrew test rom (that needs uploading)
-			//Commercial roms will have a different field
-			public NewTestRom NewTestRom { get; set; }
-		}
-
-		public class NewTestRom
-		{
-			[Required]
-			[JsonConverter(typeof(StringEnumConverter))]
-			public RomType RomType { get; set; }
-
-			[Required]
-			public string Name { get; set; }
-
-			[Required]
-			public string FileName { get; set; }
-
-			[Required]
-			public byte[] RomBytes { get; set; }
-
-			[Required]
-			public string CodeUrl { get; set; }
-		}
-
-		public class AddTestResult
-		{
-			[Required]
-			public int TestDefinitionId { get; set; }
 		}
 	}
 }

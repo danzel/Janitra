@@ -11,12 +11,12 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace Janitra.Api.Controllers
+namespace Janitra.Api.Controllers.Api
 {
 	/// <summary>
 	/// Responsible for managing the list of Janitra Bots
 	/// </summary>
-	[Route("janitra-bots")]
+	[Route("api/janitra-bots")]
 	public class JanitraBotsController : Controller
 	{
 		private readonly JanitraContext _context;

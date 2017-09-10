@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,12 +12,12 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace Janitra.Api.Controllers
+namespace Janitra.Api.Controllers.Api
 {
 	/// <summary>
 	/// Responsible for managing the list of Citra Builds
 	/// </summary>
-	[Route("citra-builds")]
+	[Route("api/citra-builds")]
 	public class CitraBuildsController : Controller
 	{
 		private readonly JanitraContext _context;

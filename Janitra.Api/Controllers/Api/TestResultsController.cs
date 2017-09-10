@@ -6,18 +6,17 @@ using AutoMapper;
 using Janitra.Api.Services;
 using Janitra.Data;
 using Janitra.Data.Models;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace Janitra.Api.Controllers
+namespace Janitra.Api.Controllers.Api
 {
 	/// <summary>
 	/// Responsible for managing Test Results
 	/// </summary>
-	[Route("test-results")]
+	[Route("api/test-results")]
 	public class TestResultsController : Controller
 	{
 		private readonly JanitraContext _context;
