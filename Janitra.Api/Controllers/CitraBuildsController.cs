@@ -71,6 +71,17 @@ namespace Janitra.Api.Controllers
 		}
 
 		/// <summary>
+		/// Gets the given Citra Build
+		/// </summary>
+		/// <param name="citraBuildId"></param>
+		/// <returns></returns>
+		[HttpGet("{citraBuildId}")]
+		public async Task<JsonCitraBuild> Get([FromRoute] int citraBuildId)
+		{
+			return _mapper.Map<JsonCitraBuild>(await _context.CitraBuilds.SingleOrDefaultAsync(b => b.CitraBuildId == citraBuildId));
+		}
+
+		/// <summary>
 		/// Add a Citra Build
 		/// </summary>
 		/// <remarks>
