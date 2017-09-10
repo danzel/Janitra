@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace Janitra.Api.Controllers
 {
@@ -132,6 +134,9 @@ namespace Janitra.Api.Controllers
 			[Required]
 			public string TestName { get; set; }
 
+			[Required]
+			public string Notes { get; set; }
+
 			/// <summary>
 			/// Url the movie can be downloaded from
 			/// </summary>
@@ -161,6 +166,7 @@ namespace Janitra.Api.Controllers
 			[Required]
 			public int TestRomId { get; set; }
 			[Required]
+			[JsonConverter(typeof(StringEnumConverter))]
 			public RomType RomType { get; set; }
 
 			public string FileName { get; set; }
@@ -201,6 +207,7 @@ namespace Janitra.Api.Controllers
 		public class NewTestRom
 		{
 			[Required]
+			[JsonConverter(typeof(StringEnumConverter))]
 			public RomType RomType { get; set; }
 
 			[Required]

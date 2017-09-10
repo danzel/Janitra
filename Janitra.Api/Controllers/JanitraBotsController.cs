@@ -8,6 +8,8 @@ using Janitra.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace Janitra.Api.Controllers
 {
@@ -97,6 +99,7 @@ namespace Janitra.Api.Controllers
 			[Required]
 			public string HardwareDetails { get; set; }
 			[Required]
+			[JsonConverter(typeof(StringEnumConverter))]
 			public OsType Os { get; set; }
 			[Required]
 			public int AddedByUserId { get; set; }
@@ -111,6 +114,7 @@ namespace Janitra.Api.Controllers
 			[Required]
 			public string HardwareDetails { get; set; }
 			[Required]
+			[JsonConverter(typeof(StringEnumConverter))]
 			public OsType Os { get; set; }
 		}
 

@@ -1,7 +1,7 @@
 ﻿namespace Janitra.Data.Models
 {
-    public enum TestResultType
-    {
+    public enum ExecutionResult
+	{
 		/// <summary>
 		/// Citra Crashed
 		/// </summary>

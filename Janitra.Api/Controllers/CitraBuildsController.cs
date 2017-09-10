@@ -10,6 +10,8 @@ using Janitra.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace Janitra.Api.Controllers
 {
@@ -94,6 +96,9 @@ namespace Janitra.Api.Controllers
 			[Required]
 			public string GitHash { get; set; }
 			[Required]
+			public DateTimeOffset CommitTime { get; set; }
+			[Required]
+			[JsonConverter(typeof(StringEnumConverter))]
 			public BuildType BuildType { get; set; }
 			[Required]
 			public string BuildNotes { get; set; }
@@ -111,6 +116,9 @@ namespace Janitra.Api.Controllers
 			[Required]
 			public string GitHash { get; set; }
 			[Required]
+			public DateTimeOffset CommitTime { get; set; }
+			[Required]
+			[JsonConverter(typeof(StringEnumConverter))]
 			public BuildType BuildType { get; set; }
 			[Required]
 			public string BuildNotes { get; set; }

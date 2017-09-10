@@ -21,7 +21,9 @@ namespace Janitra.Data.Models
 		[Required]
 		public string ScreenshotBottomUrl { get; set; }
 
-		public TestResultType TestResultType { get; set; }
+		public ExecutionResult ExecutionResult { get; set; }
+
+		public AccuracyStatus AccuracyStatus { get; set; }
 
 		public TimeSpan TimeTaken { get; set; }
 

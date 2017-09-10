@@ -18,6 +18,8 @@ namespace Janitra.Data.Models
 		[Required]
 		public string GitHash { get; set; }
 
+		public DateTimeOffset CommitTime { get; set; }
+
 		public BuildType BuildType { get; set; }
 
 		[Required(AllowEmptyStrings = true)]

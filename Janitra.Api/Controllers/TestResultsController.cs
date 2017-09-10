@@ -9,6 +9,8 @@ using Janitra.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace Janitra.Api.Controllers
 {
@@ -100,6 +102,11 @@ namespace Janitra.Api.Controllers
 			result.JanitraBot = bot;
 			result.ReportedAt = DateTimeOffset.UtcNow;
 
+			if (testResult.ExecutionResult != ExecutionResult.Completed)
+				result.AccuracyStatus = AccuracyStatus.Incorrect;
+			//TODO: If screenshots match the last test and the last test was Correct, then we are correct (same for incorrect)
+
+
 			//TODO: Do we need to check for duplicate results?
 			await _context.AddAsync(result);
 			await _context.SaveChangesAsync();
@@ -114,6 +121,8 @@ namespace Janitra.Api.Controllers
 			[Required]
 			public int CitraBuildId { get; set; }
 			[Required]
+			public int JanitraBotId { get; set; }
+			[Required]
 			public int TestDefinitionId { get; set; }
 
 			[Required]
@@ -127,7 +136,11 @@ namespace Janitra.Api.Controllers
 			public string ScreenshotBottomUrl { get; set; }
 
 			[Required]
-			public TestResultType TestResultType { get; set; }
+			[JsonConverter(typeof(StringEnumConverter))]
+			public ExecutionResult ExecutionResult { get; set; }
+			[Required]
+			[JsonConverter(typeof(StringEnumConverter))]
+			public AccuracyStatus AccuracyStatus { get; set; }
 
 			[Required]
 			public double TimeTakenSeconds { get; set; }
@@ -156,7 +169,8 @@ namespace Janitra.Api.Controllers
 			public byte[] ScreenshotBottom { get; set; }
 
 			[Required]
-			public TestResultType TestResultType { get; set; }
+			[JsonConverter(typeof(StringEnumConverter))]
+			public ExecutionResult ExecutionResult { get; set; }
 
 			[Required]
 			public double TimeTakenSeconds { get; set; }
