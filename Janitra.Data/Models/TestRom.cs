@@ -9,25 +9,10 @@ namespace Janitra.Data.Models
 		[Key]
 		public int TestRomId { get; set; }
 
-		public RomType RomType { get; set; }
-
-		/// <summary>
-		/// Readable name for what to show this rom as.
-		/// For HW Test name it something to do with what the test is testing
-		/// </summary>
-		[Required]
-		public string ReadableName { get; set; }
-
-		/// <summary>
-		/// File name for the ROM.
-		/// For commercial ROMs this should match what it is named when dumped using Godmode9(?)
-		/// </summary>
-		[Required]
-		public string FileName { get; set; }
-
 		/// <summary>
 		/// A URL to download the rom from, if it is a homebrew ROM
 		/// </summary>
+		[Required]
 		public string RomUrl { get; set; }
 
 		/// <summary>
@@ -39,7 +24,7 @@ namespace Janitra.Data.Models
 		public string RomSha256 { get; set; }
 
 		/// <summary>
-		/// For HWTest/Homebrew this is the location where the code for the rom is
+		/// This is the location where the code for the rom is
 		/// </summary>
 		public string CodeUrl { get; set; }
 
