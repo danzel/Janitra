@@ -29,7 +29,7 @@
             <tr>
                 <td style="white-space: nowrap"><a asp-action="View" asp-route-id="@test.TestDefinitionId">@test.TestName</a></td>
                 <td>@test.Notes</td>
-                <td>@test.AddedAt.ToString("yyyy-MM-dd")</td>
+                <td style="white-space: nowrap">@test.AddedAt.ToString("yyyy-MM-dd")</td>
             </tr>
         }
     </tbody>
