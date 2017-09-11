@@ -103,10 +103,9 @@ namespace Janitra.Api.Controllers.Api
 
 			if (testResult.ExecutionResult != ExecutionResult.Completed)
 				result.AccuracyStatus = AccuracyStatus.Incorrect;
-			//TODO: If screenshots match the last test and the last test was Correct, then we are correct (same for incorrect)
+			//TODO: If screenshots match any other result for this test, then we are the same as that test (Correct/Incorrect)
+			//TODO: Check for duplicate results?
 
-
-			//TODO: Do we need to check for duplicate results?
 			await _context.AddAsync(result);
 			await _context.SaveChangesAsync();
 			return Ok();

@@ -79,6 +79,10 @@ namespace Janitra.Data
 				.WithMany(cb => cb.TestResults)
 				.HasForeignKey(tr => tr.TestDefinitionId);
 
+			//UK TestResult.[CitraBuildId + TestDefinitionId + JanitraBotId]
+			modelBuilder.Entity<TestResult>()
+				.HasIndex(tr => new { tr.CitraBuildId, tr.TestDefinitionId, tr.JanitraBotId })
+				.IsUnique();
 
 			//FK TestRom* -> AddedByUser
 			modelBuilder.Entity<TestRom>()
