@@ -79,12 +79,12 @@ namespace Janitra.Api.Services
 
 		public async Task<string> StoreTestRom(byte[] romBytes)
 		{
-			return await Store("testroms", romBytes);
+			return await Store("testroms", romBytes, ".3dsx");
 		}
 
 		public async Task<string> StoreMovie(byte[] movieBytes)
 		{
-			return await Store("movies", movieBytes);
+			return await Store("movies", movieBytes, ".cts");
 		}
 
 		public async Task<string> StoreLog(byte[] logBytes)
