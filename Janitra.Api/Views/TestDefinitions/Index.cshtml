@@ -26,8 +26,8 @@
     <tbody>
         @foreach (var test in Model)
         {
-            <tr style="cursor: pointer">
-                <td>@test.TestName</td>
+            <tr>
+                <td style="white-space: nowrap"><a asp-action="View" asp-route-id="@test.TestDefinitionId">@test.TestName</a></td>
                 <td>@test.Notes</td>
                 <td>@test.AddedAt.ToString("yyyy-MM-dd")</td>
             </tr>

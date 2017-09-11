@@ -1,0 +1,34 @@
+﻿@model Janitra.Data.Models.TestDefinition
+@{
+    ViewData["Title"] = "View Test";
+}
+<section class="hero is-primary">
+    <div class="hero-body">
+        <div class="container">
+            <h1 class="title">
+                @Model.TestName
+            </h1>
+        </div>
+    </div>
+</section>
+<section class="section">
+    @Model.Notes<br/>
+    <br/>
+    Added at: @Model.AddedAt.ToString("yyyy-MM-dd")<br/>
+    
+    <a class="button is-primary" href="@Model.MovieUrl">
+        <span class="icon">
+            <i class="fa fa-download"></i>
+        </span>
+        <span>Download Movie</span>
+    </a>
+    <a class="button is-info" href="@Model.TestRom.RomUrl">
+        <span class="icon">
+            <i class="fa fa-download"></i>
+        </span>
+        <span>Download Rom</span>
+    </a>
+</section>
+<section class="section">
+    TODO: List test results here?
+</section>

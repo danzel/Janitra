@@ -32,9 +32,9 @@ namespace Janitra.Api.Controllers
 			return View(await _context.TestDefinitions.Include(td => td.TestRom).Where(b => b.ActivelyTesting).OrderBy(b => b.TestDefinitionId).ToArrayAsync());
 		}
 
-		public async Task<IActionResult> ViewTest(int id)
+		public async Task<IActionResult> View(int id)
 		{
-			return View(await _context.TestDefinitions.SingleAsync(td => td.TestDefinitionId == id));
+			return View(await _context.TestDefinitions.Include(td => td.TestRom).SingleAsync(td => td.TestDefinitionId == id));
 		}
 
 		[HttpGet]
@@ -83,7 +83,7 @@ namespace Janitra.Api.Controllers
 				await _context.AddAsync(def);
 				await _context.SaveChangesAsync();
 
-				return RedirectToAction("ViewTest", new { id = def.TestDefinitionId });
+				return RedirectToAction("View", new { id = def.TestDefinitionId });
 			}
 			return View(test);
 		}

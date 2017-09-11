@@ -29,7 +29,7 @@
     @foreach (var build in Model)
     {
         <tr>
-            <td><a href="/builds/view/@build.CitraBuildId">@build.CitraBuildId</a></td>
+            <td><a asp-action="View" asp-route-id="@build.CitraBuildId">@build.CitraBuildId</a></td>
             <td>@build.GitHash</td>
             <td>@build.BuildType</td>
             <td>@build.BuildNotes</td>
