@@ -1,23 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
 using Janitra.Api.Services;
 using Janitra.Data.Models;
 using Janitra.Data.Repositories;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 
 namespace Janitra.Api.Controllers
@@ -26,22 +21,13 @@ namespace Janitra.Api.Controllers
 	{
 		public string GithubClientId { get; set; }
 		public string GithubClientSecret { get; set; }
-
-		/// <summary>
-		/// Where to redirect the user to after authenticating them, will have their JWT appended to the end
-		/// </summary>
-		public string RedirectUrl { get; set; }
-
-		public string JwtIssuer { get; set; }
-		public string JwtKey { get; set; }
-		public double JwtLifetimeDays { get; set; }
 	}
 
 	/// <summary>
 	/// Responsible for authentication
 	/// </summary>
-	[Route("oauth")]
-	public class OAuthController : Controller
+	[ApiExplorerSettings(IgnoreApi = true)]
+	public class AuthController : Controller
 	{
 		//https://developer.github.com/apps/building-integrations/setting-up-and-registering-oauth-apps/about-authorization-options-for-oauth-apps/
 
@@ -53,7 +39,7 @@ namespace Janitra.Api.Controllers
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public OAuthController(IOptions<OAuthControllerOptions> options, IDistributedCache cache, UserRepository userRepository, CurrentUser currentUser)
+		public AuthController(IOptions<OAuthControllerOptions> options, IDistributedCache cache, UserRepository userRepository, CurrentUser currentUser)
 		{
 			_options = options;
 			_cache = cache;
@@ -61,11 +47,21 @@ namespace Janitra.Api.Controllers
 			_currentUser = currentUser;
 		}
 
+		public IActionResult Index()
+		{
+			return View(_currentUser);
+		}
+
+		public IActionResult LogOut()
+		{
+			HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+			return Redirect("/");
+		}
+
 		/// <summary>
 		/// Begin an OAuth authentication with github
 		/// </summary>
-		[HttpGet("github")]
-		[ProducesResponseType(StatusCodes.Status302Found)]
 		public async Task<IActionResult> Github()
 		{
 			var state = SecureRandomStringGenerator.Generate();
@@ -76,9 +72,9 @@ namespace Janitra.Api.Controllers
 		}
 
 		/// <summary>
-		/// Finish an OAuth authentication with github. Redirects you to a URL including your JWT (for authentication)
+		/// Finish an OAuth authentication with github. Redirects you to /
 		/// </summary>
-		[HttpGet("github/callback")]
+		[HttpGet("auth/github/callback")]
 		[ProducesResponseType(StatusCodes.Status302Found)]
 		[ProducesResponseType(StatusCodes.Status403Forbidden)]
 		public async Task<IActionResult> GithubCallback([FromQuery] string code, [FromQuery] string state)
@@ -125,22 +121,6 @@ namespace Janitra.Api.Controllers
 			return Redirect("/");
 		}
 
-		/// <summary>
-		/// Returns the authenticated users details if authenticated
-		/// </summary>
-		[Authorize]
-		[HttpGet("verify-auth")]
-		[ProducesResponseType(typeof(VerifyAuthResult), StatusCodes.Status200OK)]
-		[ProducesResponseType(StatusCodes.Status401Unauthorized)]
-		public VerifyAuthResult VerifyAuth()
-		{
-			return new VerifyAuthResult
-			{
-				UserId = _currentUser.User.UserId,
-				Name = _currentUser.User.OAuthName
-			};
-		}
-
 		private class OAuthAccessToken
 		{
 			public string access_token { get; set; }
@@ -153,14 +133,6 @@ namespace Janitra.Api.Controllers
 			public string login { get; set; }
 			public long id { get; set; }
 			public string name { get; set; }
-		}
-
-		public class VerifyAuthResult
-		{
-			[Required]
-			public int UserId { get; set; }
-			[Required]
-			public string Name { get; set; }
 		}
 	}
 }
