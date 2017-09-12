@@ -14,11 +14,13 @@ namespace Janitra.Data.Models
 
 		public DateTimeOffset ReportedAt { get; set; }
 
-		[Required]
+		[Required, Url]
 		public string LogUrl { get; set; }
-		[Required]
+
+		[Required, Url]
 		public string ScreenshotTopUrl { get; set; }
-		[Required]
+
+		[Required, Url]
 		public string ScreenshotBottomUrl { get; set; }
 
 		public ExecutionResult ExecutionResult { get; set; }

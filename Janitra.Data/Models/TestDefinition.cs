@@ -23,7 +23,7 @@ namespace Janitra.Data.Models
 		/// <summary>
 		/// Url for the location of the movie file for this test
 		/// </summary>
-		[Required]
+		[Required, Url]
 		public string MovieUrl { get; set; }
 
 		/// <summary>
@@ -51,11 +51,13 @@ namespace Janitra.Data.Models
 		/// <summary>
 		/// The ROM used for this test
 		/// </summary>
+		[Required]
 		public TestRom TestRom { get; set; }
 
 		/// <summary>
 		/// The User that added this test
 		/// </summary>
+		[Required]
 		public User AddedByUser { get; set; }
 
 		public ICollection<TestResult> TestResults { get; set; }

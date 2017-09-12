@@ -29,6 +29,7 @@ namespace Janitra.Data.Models
 		public UserLevel UserLevel { get; set; }
 
 		//Navigation Fields
+
 		public ICollection<CitraBuild> AddedCitraBuilds { get; set; }
 		public ICollection<JanitraBot> AddedJanitraBots { get; set; }
 		public ICollection<TestDefinition> AddedTestDefinitions { get; set; }

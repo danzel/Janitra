@@ -35,16 +35,19 @@ namespace Janitra.Data.Models
 		/// <summary>
 		/// Zip file location of the build for windows
 		/// </summary>
+		[Url]
 		public string WindowsUrl { get; set; }
 
 		/// <summary>
 		/// TarXz file location of the build for linux
 		/// </summary>
+		[Url]
 		public string LinuxUrl { get; set; }
 
 		/// <summary>
 		/// TarGz file location of the build for Mac OS X
 		/// </summary>
+		[Url]
 		public string OsxUrl { get; set; }
 
 		/// <summary>
@@ -53,6 +56,7 @@ namespace Janitra.Data.Models
 		public int AddedByUserId { get; set; }
 
 		//Navigation Fields
+		[Required]
 		public User AddedByUser { get; set; }
 
 		public ICollection<TestResult> TestResults { get; set; }

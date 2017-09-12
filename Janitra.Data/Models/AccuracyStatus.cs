@@ -8,16 +8,16 @@
 		/// <summary>
 		/// Not sure if this is an accurate result or not
 		/// </summary>
-		Unset,
+		Unset = 0,
 
 		/// <summary>
 		/// The result is correct
 		/// </summary>
-		Correct,
+		Correct = 1,
 
 		/// <summary>
 		/// The result is incorrect
 		/// </summary>
-		Incorrect
+		Incorrect = 2
 	}
 }

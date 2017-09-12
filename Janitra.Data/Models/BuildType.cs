@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Janitra.Data.Models
+﻿namespace Janitra.Data.Models
 {
 	/// <summary>
 	/// What type of build this is. The reason 
@@ -13,8 +9,6 @@ namespace Janitra.Data.Models
 		/// Any other type of build
 		/// </summary>
 		Custom = 0,
-
-		//TODO: Other build types as below
 
 		/// <summary>
 		/// Built off the citra-emu/citra@master branch

@@ -10,9 +10,9 @@ namespace Janitra.Data.Models
 		public int TestRomId { get; set; }
 
 		/// <summary>
-		/// A URL to download the rom from, if it is a homebrew ROM
+		/// A URL to download the rom from
 		/// </summary>
-		[Required]
+		[Required, Url]
 		public string RomUrl { get; set; }
 
 		/// <summary>
@@ -26,6 +26,7 @@ namespace Janitra.Data.Models
 		/// <summary>
 		/// This is the location where the code for the rom is
 		/// </summary>
+		[Required, Url]
 		public string CodeUrl { get; set; }
 
 		public int AddedByUserId { get; set; }

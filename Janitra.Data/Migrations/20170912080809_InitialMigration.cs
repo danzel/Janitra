@@ -35,8 +35,9 @@ namespace Janitra.Data.Migrations
                     AddedByUserId = table.Column<int>(type: "int", nullable: false),
                     BuildNotes = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     BuildType = table.Column<int>(type: "int", nullable: false),
+                    CommitTime = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     DateAdded = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    GitHash = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    GitHash = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
                     LinuxUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     OsxUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     WindowsUrl = table.Column<string>(type: "nvarchar(max)", nullable: true)
@@ -83,12 +84,9 @@ namespace Janitra.Data.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     AddedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     AddedByUserId = table.Column<int>(type: "int", nullable: false),
-                    CodeUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    FileName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ReadableName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CodeUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     RomSha256 = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
-                    RomType = table.Column<int>(type: "int", nullable: false),
-                    RomUrl = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    RomUrl = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -139,14 +137,15 @@ namespace Janitra.Data.Migrations
                 {
                     TestResultId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    AccuracyStatus = table.Column<int>(type: "int", nullable: false),
                     CitraBuildId = table.Column<int>(type: "int", nullable: false),
+                    ExecutionResult = table.Column<int>(type: "int", nullable: false),
                     JanitraBotId = table.Column<int>(type: "int", nullable: false),
                     LogUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ReportedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     ScreenshotBottomUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ScreenshotTopUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     TestDefinitionId = table.Column<int>(type: "int", nullable: false),
-                    TestResultType = table.Column<int>(type: "int", nullable: false),
                     TimeTaken = table.Column<TimeSpan>(type: "time", nullable: false)
                 },
                 constraints: table =>
@@ -205,11 +204,6 @@ namespace Janitra.Data.Migrations
                 column: "TestRomId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TestResults_CitraBuildId",
-                table: "TestResults",
-                column: "CitraBuildId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_TestResults_JanitraBotId",
                 table: "TestResults",
                 column: "JanitraBotId");
@@ -218,6 +212,12 @@ namespace Janitra.Data.Migrations
                 name: "IX_TestResults_TestDefinitionId",
                 table: "TestResults",
                 column: "TestDefinitionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TestResults_CitraBuildId_TestDefinitionId_JanitraBotId",
+                table: "TestResults",
+                columns: new[] { "CitraBuildId", "TestDefinitionId", "JanitraBotId" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_TestRoms_AddedByUserId",

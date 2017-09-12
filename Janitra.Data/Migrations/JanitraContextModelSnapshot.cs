@@ -35,10 +35,13 @@ namespace Janitra.Data.Migrations
 
                     b.Property<int>("BuildType");
 
+                    b.Property<DateTimeOffset>("CommitTime");
+
                     b.Property<DateTimeOffset>("DateAdded");
 
                     b.Property<string>("GitHash")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasMaxLength(40);
 
                     b.Property<string>("LinuxUrl");
 
@@ -124,7 +127,11 @@ namespace Janitra.Data.Migrations
                     b.Property<int>("TestResultId")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<int>("AccuracyStatus");
+
                     b.Property<int>("CitraBuildId");
+
+                    b.Property<int>("ExecutionResult");
 
                     b.Property<int>("JanitraBotId");
 
@@ -141,17 +148,16 @@ namespace Janitra.Data.Migrations
 
                     b.Property<int>("TestDefinitionId");
 
-                    b.Property<int>("TestResultType");
-
                     b.Property<TimeSpan>("TimeTaken");
 
                     b.HasKey("TestResultId");
 
-                    b.HasIndex("CitraBuildId");
-
                     b.HasIndex("JanitraBotId");
 
                     b.HasIndex("TestDefinitionId");
+
+                    b.HasIndex("CitraBuildId", "TestDefinitionId", "JanitraBotId")
+                        .IsUnique();
 
                     b.ToTable("TestResults");
                 });
@@ -165,21 +171,15 @@ namespace Janitra.Data.Migrations
 
                     b.Property<int>("AddedByUserId");
 
-                    b.Property<string>("CodeUrl");
-
-                    b.Property<string>("FileName")
-                        .IsRequired();
-
-                    b.Property<string>("ReadableName")
+                    b.Property<string>("CodeUrl")
                         .IsRequired();
 
                     b.Property<string>("RomSha256")
                         .IsRequired()
                         .HasMaxLength(64);
 
-                    b.Property<int>("RomType");
-
-                    b.Property<string>("RomUrl");
+                    b.Property<string>("RomUrl")
+                        .IsRequired();
 
                     b.HasKey("TestRomId");
 
