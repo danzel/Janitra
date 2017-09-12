@@ -1,0 +1,86 @@
+﻿@model Janitra.Data.Models.TestResult
+@{
+    ViewData["Title"] = "View Test Result";
+}
+<section class="hero is-primary">
+    <div class="hero-body">
+        <div class="container">
+            <h1 class="title">
+                @Model.TestDefinition.TestName Result
+            </h1>
+        </div>
+    </div>
+</section>
+<section class="section">
+    <div class="field is-horizontal">
+        <div class="field-label label">Build</div>
+        <div class="field-body">
+            <a asp-controller="Builds" asp-action="View" asp-route-id="@Model.CitraBuildId">@Model.CitraBuild.GitHash (@Model.CitraBuild.CommitTime)</a>
+        </div>
+    </div>
+    <div class="field is-horizontal">
+        <div class="field-label label">Ran On</div>
+        <div class="field-body">
+            @Model.JanitraBot.Name
+        </div>
+    </div>
+    <div class="field is-horizontal">
+        <div class="field-label label">Ran At</div>
+        <div class="field-body">
+            @Model.ReportedAt
+        </div>
+    </div>
+    <div class="field is-horizontal">
+        <div class="field-label label">Time Taken</div>
+        <div class="field-body">
+            @Model.TimeTaken
+        </div>
+    </div>
+    <div class="field is-horizontal">
+        <div class="field-label label">Execution Result</div>
+        <div class="field-body">
+            <execution-result result="@Model.ExecutionResult"/>
+        </div>
+    </div>
+
+    <div class="field is-horizontal">
+        <div class="field-label label">Accuracy Status</div>
+        <div class="field-body">
+            <accuracy-status status="@Model.AccuracyStatus"/>
+        </div>
+    </div>
+
+    <div class="field is-horizontal">
+        <div class="field-label label">Screenshot Top</div>
+        <div class="field-body">
+            <img src="@Model.ScreenshotTopUrl"/>
+        </div>
+    </div>
+    <div class="field is-horizontal">
+        <div class="field-label label">Screenshot Bottom</div>
+        <div class="field-body">
+            <img src="@Model.ScreenshotBottomUrl" style="padding-left: 40px"/>
+        </div>
+    </div>
+
+    @if (User.IsInRole("Developer"))
+    {
+        <form asp-action="UpdateAccuracy" onsubmit="return confirm('Are you sure you want to change the accuracy status?')">
+            <div class="field is-horizontal">
+                <div class="field-label label">Change Accuracy Status</div>
+                <div class="field-body field has-addons">
+                    <input type="hidden" name="id" value="@Model.TestResultId"/>
+                    <span class="control">
+                        <input type="submit" class="button is-outlined is-success" name="status" value="Correct"/>
+                    </span>
+                    <span class="control">
+                        <input type="submit" class="button is-outlined is-warning" name="status" value="Unset"/>
+                    </span>
+                    <span class="control">
+                        <input type="submit" class="button is-outlined is-danger" name="status" value="Incorrect"/>
+                    </span>
+                </div>
+            </div>
+        </form>
+    }
+</section>
