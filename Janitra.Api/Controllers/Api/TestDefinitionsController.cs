@@ -101,12 +101,13 @@ namespace Janitra.Api.Controllers.Api
 			[Required]
 			public int TestRomId { get; set; }
 
-			public string FileName { get; set; }
+			[Required]
 			public string RomUrl { get; set; }
 
 			[Required]
 			public string RomSha256 { get; set; }
 
+			[Required]
 			public string CodeUrl { get; set; }
 
 			[Required]

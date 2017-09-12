@@ -34,3 +34,9 @@
         }
     </tbody>
 </table>
+@if (User.IsInRole("Developer"))
+{
+    <section class="section">
+        <a asp-action="Add" class="button">Add a Test Definition</a>
+    </section>
+}

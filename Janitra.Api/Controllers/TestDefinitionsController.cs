@@ -66,7 +66,7 @@ namespace Janitra.Api.Controllers
 					ActivelyTesting = true,
 					AddedAt = now,
 					AddedByUser = _currentUser.User,
-					MovieUrl = await _fileStorageService.StoreTestRom(movieBytes),
+					MovieUrl = await _fileStorageService.StoreMovie(movieBytes),
 					MovieSha256 = SHA256Hash.HashBytes(movieBytes),
 					Notes = test.Notes,
 					TestName = test.TestName,

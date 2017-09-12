@@ -1,4 +1,6 @@
-﻿@model IEnumerable<Janitra.Data.Models.CitraBuild>
+﻿@using Janitra.Api.Services
+@using Microsoft.Extensions.DependencyInjection
+@model IEnumerable<Janitra.Data.Models.CitraBuild>
 
 @{
     ViewData["Title"] = "Builds List";
@@ -38,3 +40,9 @@
     }
     </tbody>
 </table>
+@if (User.IsInRole("Developer"))
+{
+    <section class="section">
+        <a asp-action="Add" class="button">Add a Build</a>
+    </section>
+}
