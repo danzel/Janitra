@@ -1,20 +1,16 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
-using System.Security.Claims;
-using System.Text;
 using Janitra.Api.Controllers;
 using Janitra.Api.Services;
 using Janitra.Data;
 using Janitra.Data.Repositories;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.Tokens;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace Janitra.Api
