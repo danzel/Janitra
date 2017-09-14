@@ -20,22 +20,22 @@
 <table class="table" style="width: 100%">
     <thead>
     <tr>
-        <th>Id</th>
+        <th>Date</th>
         <th>Git Hash</th>
         <th>Build Type</th>
         <th>Notes</th>
-        <th>Date</th>
     </tr>
     </thead>
     <tbody>
     @foreach (var build in Model)
     {
         <tr>
-            <td><a asp-action="View" asp-route-id="@build.CitraBuildId">@build.CitraBuildId</a></td>
+            <td style="white-space: nowrap">
+                <a asp-action="View" asp-route-id="@build.CitraBuildId">@build.CommitTime.ToString("yyyy-MM-dd")</a>
+            </td>
             <td>@build.GitHash</td>
             <td>@build.BuildType</td>
             <td>@build.BuildNotes</td>
-            <td style="white-space: nowrap">@build.CommitTime.ToString("yyyy-MM-dd")</td>
         </tr>
     }
     </tbody>

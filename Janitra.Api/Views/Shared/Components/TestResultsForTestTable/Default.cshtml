@@ -1,0 +1,50 @@
+﻿@using Janitra.Data.Models
+@model Janitra.Api.ViewComponents.TestResultsForTestTableViewModel
+
+<table class="table is-narrow">
+    <thead>
+        <tr>
+            <th>Bot</th>
+            @foreach (var build in Model.Builds)
+            {
+                <th>
+                    <span style="font-size: small">@build.CommitTime.ToString("yyyy-MM-dd")</span>
+                </th>}
+        </tr>
+    </thead>
+    @foreach (var bot in Model.Bots)
+    {
+        <tr>
+            <td>@bot.Name</td>
+            @foreach (var build in Model.Builds)
+            {
+                var result = Model.Results.SingleOrDefault(r => r.CitraBuildId == build.CitraBuildId && r.JanitraBotId == bot.JanitraBotId);
+                if (result == null)
+                {
+                    <td></td>
+                }
+                else
+                {
+                    string className;
+                    switch (result.AccuracyStatus)
+                    {
+                        case AccuracyStatus.Unset:
+                            className = "is-warning";
+                            break;
+                        case AccuracyStatus.Correct:
+                            className = "is-success";
+                            break;
+                        case AccuracyStatus.Incorrect:
+                            className = "is-danger";
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
+                    <td class="@className">
+                        <a asp-controller="TestResults" asp-action="View" asp-route-id="@result.TestResultId" style="color: inherit">@result.AccuracyStatus</a>
+                    </td>
+                }
+            }
+        </tr>
+    }
+</table>

@@ -13,6 +13,12 @@
 </section>
 <section class="section">
     <div class="field is-horizontal">
+        <div class="field-label label">Test</div>
+        <div class="field-body">
+            <a asp-controller="TestDefinitions" asp-action="View" asp-route-id="@Model.TestDefinitionId">@Model.TestDefinition.TestName</a>
+        </div>
+    </div>
+    <div class="field is-horizontal">
         <div class="field-label label">Build</div>
         <div class="field-body">
             <a asp-controller="Builds" asp-action="View" asp-route-id="@Model.CitraBuildId">@Model.CitraBuild.GitHash (@Model.CitraBuild.CommitTime)</a>

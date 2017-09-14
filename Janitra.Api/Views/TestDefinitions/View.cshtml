@@ -16,19 +16,25 @@
     <br/>
     Added at: @Model.AddedAt.ToString("yyyy-MM-dd")<br/>
     
-    <a class="button is-primary" href="@Model.MovieUrl">
-        <span class="icon">
-            <i class="fa fa-download"></i>
-        </span>
-        <span>Download Movie</span>
-    </a>
     <a class="button is-info" href="@Model.TestRom.RomUrl">
         <span class="icon">
             <i class="fa fa-download"></i>
         </span>
         <span>Download Rom</span>
     </a>
+    <a class="button is-info" href="@Model.MovieUrl">
+        <span class="icon">
+            <i class="fa fa-file-video-o"></i>
+        </span>
+        <span>Download Movie</span>
+    </a>
+    <a class="button is-info" href="@Model.TestRom.CodeUrl">
+        <span class="icon">
+            <i class="fa fa-code"></i>
+        </span>
+        <span>View Source Code</span>
+    </a>
 </section>
 <section class="section">
-    TODO: List test results here?
+    <vc:test-results-for-test-table test-definition-id="@Model.TestDefinitionId"></vc:test-results-for-test-table>
 </section>
