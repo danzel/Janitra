@@ -31,7 +31,7 @@
         <div class="navbar-end">
             <div class="navbar-item">
                 @{
-                    var user = Context.RequestServices.GetService<Janitra.Api.Services.CurrentUser>();
+                    var user = Context.RequestServices.GetService<Janitra.Services.CurrentUser>();
                     if (user.User == null)
                     {
                         <a asp-controller="Auth" asp-action="Index">Log In</a>}

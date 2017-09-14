@@ -1,24 +1,24 @@
 ﻿@using Janitra.Data.Models
-@model Janitra.Api.ViewComponents.TestResultsForTestTableViewModel
+@model Janitra.ViewComponents.TestResultsForBuildTableViewModel
 
 <table class="table is-narrow">
     <thead>
-        <tr>
-            <th>Bot</th>
-            @foreach (var build in Model.Builds)
-            {
-                <th>
-                    <span style="font-size: small">@build.CommitTime.ToString("yyyy-MM-dd")</span>
-                </th>}
-        </tr>
+    <tr>
+        <th>Test</th>
+        @foreach (var bot in Model.Bots)
+        {
+            <th>
+                <span style="font-size: small">@bot.Name</span>
+            </th>}
+    </tr>
     </thead>
-    @foreach (var bot in Model.Bots)
+    @foreach (var test in Model.Tests)
     {
         <tr>
-            <td>@bot.Name</td>
-            @foreach (var build in Model.Builds)
+            <td>@test.TestName</td>
+            @foreach (var bot in Model.Bots)
             {
-                var result = Model.Results.SingleOrDefault(r => r.CitraBuildId == build.CitraBuildId && r.JanitraBotId == bot.JanitraBotId);
+                var result = Model.Results.SingleOrDefault(r => r.TestDefinitionId == test.TestDefinitionId && r.JanitraBotId == bot.JanitraBotId);
                 if (result == null)
                 {
                     <td></td>
