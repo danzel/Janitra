@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace Janitra.Api.Controllers
+namespace Janitra.Controllers
 {
     public class HomeController : Controller
     {

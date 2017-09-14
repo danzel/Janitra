@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace Janitra.Api.Controllers
+namespace Janitra.Controllers
 {
 	public class TestResultsController : Controller
 	{

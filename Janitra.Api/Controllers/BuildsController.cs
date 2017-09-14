@@ -3,14 +3,14 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using Janitra.Api.Services;
+using Janitra.Services;
 using Janitra.Data;
 using Janitra.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace Janitra.Api.Controllers
+namespace Janitra.Controllers
 {
 	public class BuildsController : Controller
 	{

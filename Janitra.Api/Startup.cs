@@ -1,8 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
-using Janitra.Api.Controllers;
-using Janitra.Api.Services;
+using Janitra.Controllers;
+using Janitra.Services;
 using Janitra.Data;
 using Janitra.Data.Repositories;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -13,7 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
 
-namespace Janitra.Api
+namespace Janitra
 {
 	public class Startup
 	{

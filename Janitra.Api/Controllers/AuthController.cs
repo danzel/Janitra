@@ -4,7 +4,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Janitra.Api.Services;
+using Janitra.Services;
 using Janitra.Data.Models;
 using Janitra.Data.Repositories;
 using Microsoft.AspNetCore.Authentication;
@@ -15,7 +15,7 @@ using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 
-namespace Janitra.Api.Controllers
+namespace Janitra.Controllers
 {
 	public class OAuthControllerOptions
 	{

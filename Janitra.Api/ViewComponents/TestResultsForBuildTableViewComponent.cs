@@ -5,7 +5,7 @@ using Janitra.Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace Janitra.Api.ViewComponents
+namespace Janitra.ViewComponents
 {
     public class TestResultsForBuildTableViewComponent : ViewComponent
     {

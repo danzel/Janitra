@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using System.Linq;
 
-namespace Janitra.Api.Services
+namespace Janitra.Services
 {
 	public class CurrentUser
 	{

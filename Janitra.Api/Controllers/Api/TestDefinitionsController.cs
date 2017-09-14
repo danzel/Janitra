@@ -8,7 +8,7 @@ using Janitra.Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace Janitra.Api.Controllers.Api
+namespace Janitra.Controllers.Api
 {
 	/// <summary>
 	/// Responsible for managing the Test Definitions

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Janitra.Api.Services;
+using Janitra.Services;
 using Janitra.Data;
 using Janitra.Data.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace Janitra.Api.Controllers
+namespace Janitra.Controllers
 {
 	public class TestDefinitionsController : Controller
 	{

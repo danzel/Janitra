@@ -2,7 +2,7 @@
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
 
-namespace Janitra.Api.Services
+namespace Janitra.Services
 {
 	public interface IFileStorageService
 	{

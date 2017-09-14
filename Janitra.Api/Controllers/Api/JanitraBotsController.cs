@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using Janitra.Api.Services;
+using Janitra.Services;
 using Janitra.Data;
 using Janitra.Data.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace Janitra.Api.Controllers.Api
+namespace Janitra.Controllers.Api
 {
 	/// <summary>
 	/// Responsible for managing the list of Janitra Bots

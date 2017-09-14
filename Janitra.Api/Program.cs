@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 
-namespace Janitra.Api
+namespace Janitra
 {
     public class Program
     {

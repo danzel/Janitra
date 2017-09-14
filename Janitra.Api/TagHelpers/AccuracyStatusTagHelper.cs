@@ -2,7 +2,7 @@
 using Janitra.Data.Models;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 
-namespace Janitra.Api.TagHelpers
+namespace Janitra.TagHelpers
 {
 	public class AccuracyStatusTagHelper : TagHelper
 	{

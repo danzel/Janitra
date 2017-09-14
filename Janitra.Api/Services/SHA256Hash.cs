@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Security.Cryptography;
 
-namespace Janitra.Api.Services
+namespace Janitra.Services
 {
     internal static class SHA256Hash
     {
