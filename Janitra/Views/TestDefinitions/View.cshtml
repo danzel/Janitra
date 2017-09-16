@@ -12,10 +12,31 @@
     </div>
 </section>
 <section class="section">
-    @Model.Notes<br/>
-    <br/>
-    Added at: @Model.AddedAt.ToString("yyyy-MM-dd")<br/>
+    <div class="field is-horizontal">
+        <div class="field-label">
+            <label class="label">Notes</label>
+        </div>
+        <div class="field-body">
+            <div class="field">
+                @foreach (var line in @Model.Notes.Split('\n'))
+                {
+                    @line<br/>
+                }
+            </div>
+        </div>
+    </div>
     
+    <div class="field is-horizontal">
+        <div class="field-label">
+            <label class="label">Added At</label>
+        </div>
+        <div class="field-body">
+            <div class="field">
+                @Model.AddedAt.ToString("yyyy-MM-dd")
+            </div>
+        </div>
+    </div>
+
     <a class="button is-info" href="@Model.TestRom.RomUrl">
         <span class="icon">
             <i class="fa fa-download"></i>

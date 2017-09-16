@@ -12,36 +12,73 @@
     </div>
 </section>
 <section class="section">
-    Git Hash: <a target="_blank" href=@("https://github.com/citra-emu/citra/commit/" + Model.GitHash)>@Model.GitHash</a><br/>
-    Committed At: @Model.CommitTime.ToString("yyyy-MM-dd")<br/>
+    <div class="field is-horizontal">
+        <div class="field-label">
+            <label class="label">Git Hash</label>
+        </div>
+        <div class="field-body">
+            <div class="field">
+                <a target="_blank" href=@("https://github.com/citra-emu/citra/commit/" + Model.GitHash)>@Model.GitHash</a>
+            </div>
+        </div>
+    </div>
+    <div class="field is-horizontal">
+        <div class="field-label">
+            <label class="label">Committed At</label>
+        </div>
+        <div class="field-body">
+            <div class="field">
+                @Model.CommitTime.ToString("yyyy-MM-dd")
+            </div>
+        </div>
+    </div>
+    <div class="field is-horizontal">
+        <div class="field-label">
+            <label class="label">Notes</label>
+        </div>
+        <div class="field-body">
+            <div class="field">
+                @foreach (var line in @Model.BuildNotes.Split('\n'))
+                {
+                    @line<br/>
+                }
+            </div>
+        </div>
+    </div>
 
-    Notes: @Model.BuildNotes<br/>
-
-    Download
-    @if (!string.IsNullOrEmpty(Model.WindowsUrl))
-    {
-        <a href=@Model.WindowsUrl>
-            <span class="icon">
-                <i class="fa fa-windows"></i>
-            </span>
-        </a>
-    }
-    @if (!string.IsNullOrEmpty(Model.LinuxUrl))
-    {
-        <a href=@Model.LinuxUrl>
-            <span class="icon">
-                <i class="fa fa-linux"></i>
-            </span>
-        </a>
-    }
-    @if (!string.IsNullOrEmpty(Model.OsxUrl))
-    {
-        <a href=@Model.OsxUrl>
-            <span class="icon">
-                <i class="fa fa-apple"></i>
-            </span>
-        </a>
-    }
+    <div class="field is-horizontal">
+        <div class="field-label">
+            <label class="label">Download</label>
+        </div>
+        <div class="field-body">
+            <div class="field">
+                @if (!string.IsNullOrEmpty(Model.WindowsUrl))
+                {
+                    <a href=@Model.WindowsUrl>
+                        <span class="icon">
+                            <i class="fa fa-windows"></i>
+                        </span>
+                    </a>
+                }
+                @if (!string.IsNullOrEmpty(Model.LinuxUrl))
+                {
+                    <a href=@Model.LinuxUrl>
+                        <span class="icon">
+                            <i class="fa fa-linux"></i>
+                        </span>
+                    </a>
+                }
+                @if (!string.IsNullOrEmpty(Model.OsxUrl))
+                {
+                    <a href=@Model.OsxUrl>
+                        <span class="icon">
+                            <i class="fa fa-apple"></i>
+                        </span>
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
 </section>
 <section class="section">
     <vc:test-results-for-build-table citra-build-id="@Model.CitraBuildId"></vc:test-results-for-build-table>
