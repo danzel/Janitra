@@ -68,6 +68,12 @@
             <img src="@Model.ScreenshotBottomUrl" style="padding-left: 40px"/>
         </div>
     </div>
+    <div class="field is-horizontal">
+        <div class="field-label label">Logs</div>
+        <div class="field-body">
+            <a href="@Model.LogUrl" class="button">Download Logs</a>
+        </div>
+    </div>
 
     @if (User.IsInRole("Developer"))
     {
