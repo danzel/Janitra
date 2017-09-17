@@ -107,7 +107,6 @@ namespace Janitra.Controllers.Api
 				AccessKey = accessKey
 			};
 		}
-		//TODO? Regenerate access key (if user loses it)
 
 		public class JsonJanitraBot
 		{
