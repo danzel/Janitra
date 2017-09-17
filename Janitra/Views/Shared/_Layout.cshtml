@@ -17,7 +17,11 @@
         <a class="navbar-item" href="/">
             Janitra
         </a>
-        <!-- TODO: Burger to show the menu on mobile -->
+        <div class="navbar-burger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
     </div>
     <div class="navbar-menu">
         <div class="navbar-start">
@@ -34,10 +38,12 @@
                     var user = Context.RequestServices.GetService<Janitra.Services.CurrentUser>();
                     if (user.User == null)
                     {
-                        <a asp-controller="Auth" asp-action="Index">Log In</a>}
+                        <a asp-controller="Auth" asp-action="Index">Log In</a>
+                    }
                     else
                     {
-                        <a asp-controller="Auth" asp-action="LogOut">Log Out</a>}
+                        <a asp-controller="Auth" asp-action="LogOut">Log Out</a>
+                    }
                 }
             </div>
         </div>
@@ -45,5 +51,6 @@
 </nav>
 @RenderBody()
 
+<script src="~/js/menu.js" asp-append-version="true"></script>
 @RenderSection("Scripts", required: false)
 </body>
