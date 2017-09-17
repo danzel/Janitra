@@ -7,3 +7,16 @@ after_build:
 artifacts:
   - path: dist
     name: Janitra
+deploy:
+- provider: WebDeploy
+  server: https://janitra.scm.azurewebsites.net/msdeploy.axd?site=janitra
+  website: janitra
+  username: $janitra
+  password:
+    secure: Crm8pOS5fF46ixqz8/EUhhsj6m8KY2SMbA/WyhXEURyyCteta939xDmlQfCh1rJ9bInc9rB8z+lQqlO1WL3kVw==
+  artifact: janitra
+  aspnet_core: true
+  app_offline: true
+  aspnet_core_force_restart: true
+  on:
+    branch: master
