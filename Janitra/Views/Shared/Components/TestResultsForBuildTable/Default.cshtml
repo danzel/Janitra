@@ -9,7 +9,8 @@
         {
             <th>
                 <span style="font-size: small">@bot.Name</span>
-            </th>}
+            </th>
+        }
     </tr>
     </thead>
     @foreach (var test in Model.Tests)
@@ -26,6 +27,12 @@
                 else
                 {
                     string className;
+                    string text = result.AccuracyStatus.ToString();
+                    if (result.ExecutionResult != ExecutionResult.Completed)
+                    {
+                        text = result.ExecutionResult.ToString();
+                    }
+
                     switch (result.AccuracyStatus)
                     {
                         case AccuracyStatus.Unset:
@@ -41,7 +48,7 @@
                             throw new ArgumentOutOfRangeException();
                     }
                     <td class="@className">
-                        <a asp-controller="TestResults" asp-action="View" asp-route-id="@result.TestResultId" style="color: inherit">@result.AccuracyStatus</a>
+                        <a asp-controller="TestResults" asp-action="View" asp-route-id="@result.TestResultId" style="color: inherit">@text</a>
                     </td>
                 }
             }
