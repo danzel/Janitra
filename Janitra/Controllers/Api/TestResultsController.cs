@@ -102,9 +102,24 @@ namespace Janitra.Controllers.Api
 			result.ReportedAt = DateTimeOffset.UtcNow;
 
 			if (testResult.ExecutionResult != ExecutionResult.Completed)
+			{
 				result.AccuracyStatus = AccuracyStatus.Incorrect;
-			//TODO: If screenshots match any other result for this test, then we are the same as that test (Correct/Incorrect)
-			//TODO: Check for duplicate results?
+			}
+			else
+			{
+				//If screenshots match any other result for this test, then we are the same as that test (Correct/Incorrect)
+				var matching = await _context.TestResults.FirstOrDefaultAsync(tr =>
+					tr.TestDefinitionId == testResult.TestDefinitionId &&
+					tr.ScreenshotTopUrl == result.ScreenshotTopUrl &&
+					tr.ScreenshotBottomUrl == result.ScreenshotBottomUrl);
+
+				if (matching != null)
+				{
+					//TODO: Log
+					result.AccuracyStatus = matching.AccuracyStatus;
+				}
+			}
+			//TODO: Check for duplicate results (we throw an exception ATM)
 
 			await _context.AddAsync(result);
 			await _context.SaveChangesAsync();
