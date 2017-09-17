@@ -88,6 +88,25 @@ namespace Janitra.Controllers.Api
 			};
 		}
 
+		[Authorize(Roles = "Developer")]
+		[HttpPost("reset-access-key")]
+		public async Task<AddBotResult> ResetAccessKey([FromBody] ExistingJanitraBot botDetails)
+		{
+			var bot = await _context.JanitraBots.SingleOrDefaultAsync(b => b.JanitraBotId == botDetails.JanitraBotId && b.AddedByUserId == _currentUser.User.UserId);
+			if (bot == null)
+				return null;
+
+			string accessKey = SecureRandomStringGenerator.Generate();
+
+			bot.AccessKey = CryptoHelper.Crypto.HashPassword(accessKey);
+			await _context.SaveChangesAsync();
+
+			return new AddBotResult
+			{
+				JanitraBotId = bot.JanitraBotId,
+				AccessKey = accessKey
+			};
+		}
 		//TODO? Regenerate access key (if user loses it)
 
 		public class JsonJanitraBot
@@ -118,6 +137,11 @@ namespace Janitra.Controllers.Api
 			public OsType Os { get; set; }
 		}
 
+		public class ExistingJanitraBot
+		{
+			[Required]
+			public int JanitraBotId { get; set; }
+		}
 
 		public class AddBotResult
 		{
