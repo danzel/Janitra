@@ -10,18 +10,21 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Janitra.Controllers
 {
 	public class TestDefinitionsController : Controller
 	{
 		private readonly JanitraContext _context;
+		private readonly ILogger<TestDefinitionsController> _logger;
 		private readonly CurrentUser _currentUser;
 		private readonly IFileStorageService _fileStorageService;
 
-		public TestDefinitionsController(JanitraContext context, IFileStorageService fileStorageService, CurrentUser currentUser)
+		public TestDefinitionsController(JanitraContext context, ILogger<TestDefinitionsController> logger, IFileStorageService fileStorageService, CurrentUser currentUser)
 		{
 			_context = context;
+			_logger = logger;
 			_fileStorageService = fileStorageService;
 			_currentUser = currentUser;
 		}
@@ -81,6 +84,8 @@ namespace Janitra.Controllers
 
 				await _context.AddAsync(def);
 				await _context.SaveChangesAsync();
+
+				_logger.LogInformation("Added new TestDefinition {TestDefinitionId}, by user {UserId}", def.TestDefinitionId, _currentUser.User.UserId);
 
 				return RedirectToAction("View", new { id = def.TestDefinitionId });
 			}

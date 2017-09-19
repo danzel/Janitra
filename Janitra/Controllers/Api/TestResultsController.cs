@@ -8,6 +8,7 @@ using Janitra.Data;
 using Janitra.Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
@@ -20,6 +21,7 @@ namespace Janitra.Controllers.Api
 	public class TestResultsController : Controller
 	{
 		private readonly JanitraContext _context;
+		private readonly ILogger<TestResultsController> _logger;
 		private readonly CurrentUser _currentUser;
 		private readonly IFileStorageService _fileStorage;
 		private readonly IMapper _mapper;
@@ -27,11 +29,12 @@ namespace Janitra.Controllers.Api
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public TestResultsController(JanitraContext context, CurrentUser currentUser, IFileStorageService fileStorage)
+		public TestResultsController(JanitraContext context, ILogger<TestResultsController> logger, IFileStorageService fileStorage, CurrentUser currentUser)
 		{
 			_context = context;
-			_currentUser = currentUser;
+			_logger = logger;
 			_fileStorage = fileStorage;
+			_currentUser = currentUser;
 
 			_mapper = CreateMapper();
 		}
@@ -92,6 +95,8 @@ namespace Janitra.Controllers.Api
 			if (!CryptoHelper.Crypto.VerifyHashedPassword(bot.AccessKey, testResult.AccessKey))
 				return Forbid("The given AccessKey does not match");
 
+			_logger.LogInformation("Received new result from {botid} for test {testid}", bot.JanitraBotId, testResult.TestDefinitionId);
+
 			var result = _mapper.Map<TestResult>(testResult);
 
 			result.LogUrl = await _fileStorage.StoreLog(testResult.Log);
@@ -115,7 +120,7 @@ namespace Janitra.Controllers.Api
 
 				if (matching != null)
 				{
-					//TODO: Log
+					_logger.LogInformation("Copying accuracy status from {fromid} to new result {botid} / {testid}", matching.TestResultId, bot.JanitraBotId, testResult.TestDefinitionId);
 					result.AccuracyStatus = matching.AccuracyStatus;
 				}
 			}

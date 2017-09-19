@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
 
@@ -49,11 +50,14 @@ namespace Janitra.Services
 	
 	internal class AzureBlobStorageService : IFileStorageService
 	{
+		private readonly ILogger<AzureBlobStorageService> _logger;
 		private readonly CloudBlobClient _client;
 		private readonly string _baseUrl;
 
-		public AzureBlobStorageService(string connectionString)
+		public AzureBlobStorageService(string connectionString, ILogger<AzureBlobStorageService> logger)
 		{
+			_logger = logger;
+
 			var account = CloudStorageAccount.Parse(connectionString);
 			_client = account.CreateCloudBlobClient();
 
@@ -70,9 +74,15 @@ namespace Janitra.Services
 				fileName += extension;
 			var blob = container.GetBlockBlobReference(fileName);
 
-			//TODO LOG AROUND THIS
-			if (!await blob.ExistsAsync())
+			if (await blob.ExistsAsync())
+			{
+				_logger.LogInformation("Skipping Storing file {fileName} in container {container}, already exists", fileName, containerName);
+			}
+			else
+			{
+				_logger.LogInformation("Storing file {fileName} in container {container}", fileName, containerName);
 				await blob.UploadFromByteArrayAsync(bytes, 0, bytes.Length);
+			}
 
 			return _baseUrl + containerName + "/" + fileName;
 		}

@@ -9,18 +9,21 @@ using Janitra.Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Janitra.Controllers
 {
 	public class BuildsController : Controller
 	{
 		private readonly JanitraContext _context;
+		private readonly ILogger<BuildsController> _logger;
 		private readonly CurrentUser _currentUser;
 		private readonly IMapper _mapper;
 
-		public BuildsController(JanitraContext context, CurrentUser currentUser)
+		public BuildsController(JanitraContext context, ILogger<BuildsController> logger, CurrentUser currentUser)
 		{
 			_context = context;
+			_logger = logger;
 			_currentUser = currentUser;
 
 			_mapper = CreateMapper();
@@ -66,6 +69,8 @@ namespace Janitra.Controllers
 
 				await _context.CitraBuilds.AddAsync(citraBuild);
 				await _context.SaveChangesAsync();
+
+				_logger.LogInformation("Added new Build {BuildId}, by user {UserId}", citraBuild.CitraBuildId, _currentUser.User.UserId);
 
 				return RedirectToAction("View", new { id = citraBuild.CitraBuildId });
 			}

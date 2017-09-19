@@ -3,19 +3,25 @@ using System.Linq;
 using System.Threading.Tasks;
 using Janitra.Data;
 using Janitra.Data.Models;
+using Janitra.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Janitra.Controllers
 {
 	public class TestResultsController : Controller
 	{
 		private readonly JanitraContext _context;
+		private readonly ILogger<TestResultsController> _logger;
+		private readonly CurrentUser _currentUser;
 
-		public TestResultsController(JanitraContext context)
+		public TestResultsController(JanitraContext context, ILogger<TestResultsController> logger, CurrentUser currentUser)
 		{
 			_context = context;
+			_logger = logger;
+			_currentUser = currentUser;
 		}
 
 		public async Task<IActionResult> View(int id, int changedAccuracy = 0)
@@ -41,6 +47,8 @@ namespace Janitra.Controllers
 				}
 
 				await _context.SaveChangesAsync();
+
+				_logger.LogInformation("Updating accuracy of test result {TestResultId} to {AccuracyStatus} by user {UserId}", result.TestResultId, vm.Status, _currentUser.User.UserId);
 
 				return RedirectToAction("View", new { id = vm.Id, changedAccuracy = countChanged });
 			}

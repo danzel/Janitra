@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace Janitra
@@ -33,7 +34,7 @@ namespace Janitra
 			services.Add(ServiceDescriptor.Transient<UserRepository, UserRepository>());
 			services.AddCurrentUserService();
 
-			services.AddSingleton<IFileStorageService>(new AzureBlobStorageService(Configuration.GetConnectionString("AzureStorage")));
+			services.AddSingleton<IFileStorageService>(serviceProvider => new AzureBlobStorageService(Configuration.GetConnectionString("AzureStorage"), serviceProvider.GetRequiredService<ILogger<AzureBlobStorageService>>()));
 			//services.AddSingleton<IFileStorageService, NullFileStorageService>();
 
 			services.Configure<OAuthControllerOptions>(Configuration.GetSection("OAuth"));
