@@ -94,6 +94,8 @@ namespace Janitra.Controllers.Api
 				return Forbid("No bot matches that JanitraBotId");
 			if (!CryptoHelper.Crypto.VerifyHashedPassword(bot.AccessKey, testResult.AccessKey))
 				return Forbid("The given AccessKey does not match");
+			if (!bot.RunsHwTests)
+				return Forbid("This bot is not allowed to run HwTests");
 
 			_logger.LogInformation("Received new result from {botid} for test {testid}", bot.JanitraBotId, testResult.TestDefinitionId);
 

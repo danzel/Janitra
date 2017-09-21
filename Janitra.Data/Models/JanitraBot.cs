@@ -26,6 +26,13 @@ namespace Janitra.Data.Models
 		public string HardwareDetails { get; set; }
 
 		/// <summary>
+		/// Whether this bot runs the Hardware Test Roms.
+		/// HWTest Roms are pass/fail tests and require the bots that run them to be always there, so they are restricted to developer nominated bots only.
+		/// Otherwise the bot will run Commercial Rom Tests
+		/// </summary>
+		public bool RunsHwTests { get; set; }
+
+		/// <summary>
 		/// Calculated by CryptoHelper.Crypto
 		/// </summary>
 		[Required]

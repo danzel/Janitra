@@ -1,0 +1,48 @@
+﻿@model Janitra.Controllers.ViewJanitraBotViewModel
+@{
+    ViewData["Title"] = "View Bot";
+}
+<section class="hero is-primary">
+    <div class="hero-body">
+        <div class="container">
+            <h1 class="title">
+                @Model.JanitraBot.Name
+            </h1>
+        </div>
+    </div>
+</section>
+<section class="section">
+    <div class="field is-horizontal">
+        <div class="field-label label">OS</div>
+        <div class="field-body">
+            @Model.JanitraBot.Os
+        </div>
+    </div>
+    <div class="field is-horizontal">
+        <div class="field-label label">Hardware</div>
+        <div class="field-body">
+            @Model.JanitraBot.HardwareDetails
+        </div>
+    </div>
+    <div class="field is-horizontal">
+        <div class="field-label label">Runs HW Tests</div>
+        <div class="field-body">
+            @Model.JanitraBot.RunsHwTests
+        </div>
+    </div>
+    <div class="field is-horizontal">
+        <div class="field-label label">Owner</div>
+        <div class="field-body">
+            @Model.JanitraBot.AddedByUser.OAuthName
+        </div>
+    </div>
+
+    @if (Model.CurrentUser != null && Model.CurrentUser == @Model.JanitraBot.AddedByUser)
+    {
+        <form asp-action="ResetAccessKey">
+            <input type="hidden" name="JanitraBotId" value="@Model.JanitraBot.JanitraBotId"/>
+            <input type="submit" class="button" value="Reset Access Key" onclick="return confirm('Are you sure you want to reset the Access Key for this bot? You will need to update its config')"/>
+        </form>
+    }
+    TODO: Show results from this bot
+</section>

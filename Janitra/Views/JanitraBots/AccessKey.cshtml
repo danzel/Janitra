@@ -1,0 +1,28 @@
+﻿@model Janitra.Controllers.JanitraBotAccessKeyViewModel
+@{
+    ViewData["Title"] = "Bot Access Key";
+}
+<section class="hero is-primary">
+    <div class="hero-body">
+        <div class="container">
+            <h1 class="title">
+                Bot Access Key
+            </h1>
+        </div>
+    </div>
+</section>
+<section class="section">
+    <div class="field is-horizontal">
+        <div class="field-label label">JanitraBotId</div>
+        <div class="field-body">
+            @Model.JanitraBotId
+        </div>
+    </div>
+    <div class="field is-horizontal">
+        <div class="field-label label">AccessKey</div>
+        <div class="field-body">
+            @Model.AccessKey
+        </div>
+    </div>
+    TODO: Tell user what to do with these (They go in the appconfig.Production.json)
+</section>

@@ -1,0 +1,48 @@
+﻿@model IEnumerable<Janitra.Data.Models.JanitraBot>
+
+@{
+    ViewData["Title"] = "Builds List";
+}
+<section class="hero is-primary">
+    <div class="hero-body">
+        <div class="container">
+            <h1 class="title">
+                Bots
+            </h1>
+            <h2 class="subtitle">
+                Bots that run the tests
+            </h2>
+        </div>
+    </div>
+</section>
+<table class="table" style="width: 100%">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>OS</th>
+            <th>Hardware</th>
+            <th>Runs HW Tests</th>
+            <th>Owner</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var bot in Model)
+        {
+            <tr>
+                <td style="white-space: nowrap">
+                    <a asp-action="View" asp-route-id="@bot.JanitraBotId">@bot.Name</a>
+                </td>
+                <td>@bot.Os</td>
+                <td>@bot.HardwareDetails</td>
+                <td>@bot.RunsHwTests</td>
+                <td>@bot.AddedByUser.OAuthName</td>
+            </tr>
+        }
+    </tbody>
+</table>
+@if (User.Identity.IsAuthenticated)
+{
+    <section class="section">
+        <a asp-action="Add" class="button">Add a Bot</a>
+    </section>
+}

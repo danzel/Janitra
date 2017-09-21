@@ -1,0 +1,86 @@
+﻿@model Janitra.Controllers.AddJanitraBotViewModel
+@{
+    ViewData["Title"] = "Add Bot";
+}
+
+<section class="hero is-primary">
+    <div class="hero-body">
+        <div class="container">
+            <h1 class="title">
+                Add a new Bot
+            </h1>
+        </div>
+    </div>
+</section>
+<section class="section">
+    <form asp-action="Add" enctype="multipart/form-data">
+        <div class="field is-horizontal">
+            <div class="field-label">
+                <label class="label">Name</label>
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <input class="input" type="text" asp-for="Name" />
+                    <span asp-validation-for="Name" class="help is-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="field is-horizontal">
+            <div class="field-label">
+                <label class="label">OS</label>
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <select asp-for="Os" asp-items="Html.GetEnumSelectList<Janitra.Data.Models.OsType>()">
+                        <option selected="selected" value="">Please select an OS</option>
+                    </select>
+                    <span asp-validation-for="Os" class="help is-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="field is-horizontal">
+            <div class="field-label">
+                <label class="label">Hardware Details</label>
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <textarea class="textarea" asp-for="HardwareDetails"></textarea>
+                    <span asp-validation-for="HardwareDetails" class="help is-danger"></span>
+                </div>
+            </div>
+        </div>
+        
+        @if (User.IsInRole("Developer"))
+        {
+            <div class="field is-horizontal">
+                <div class="field-label">
+                    <label class="label">Runs HW Tests</label>
+                </div>
+                <div class="field-body">
+                    <div class="field">
+                        <input type="checkbox" asp-for="RunsHwTests"/>
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <input type="hidden" asp-for="RunsHwTests" value="false"/>
+        }
+
+        <div class="field is-horizontal">
+            <div class="field-label">
+                <!-- Left empty for spacing -->
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <div class="control">
+                        <button type="submit" class="button is-primary">Add Bot</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</section>
