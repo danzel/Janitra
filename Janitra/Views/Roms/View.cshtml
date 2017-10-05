@@ -1,0 +1,44 @@
+﻿@model Janitra.Data.Models.Rom
+
+@{
+    ViewData["Title"] = Model.Name;
+}
+<section class="hero is-primary">
+    <div class="hero-body">
+        <div class="container">
+            <h1 class="title">
+                @Model.RomType: @Model.Name
+            </h1>
+        </div>
+    </div>
+</section>
+<section class="section">
+    <h3 class="title">Movies</h3>
+    <table class="table" style="width: 100%">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Results Count</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var movie in Model.Movies)
+        {
+            <tr>
+                <td style="white-space: nowrap">
+                    <a asp-controller="Movies" asp-action="View" asp-route-id="@movie.RomMovieId">@movie.Name</a>
+                </td>
+                <td>@movie.Description</td>
+                <td>@movie.Results.Count</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    @if (User.IsInRole("Developer"))
+    {
+        <section class="section">
+            <a asp-controller="Movies" asp-action="Add" class="button">Add a Movie</a>
+        </section>
+    }
+</section>

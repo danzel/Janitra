@@ -1,0 +1,64 @@
+﻿@model Janitra.Data.Models.RomMovie
+
+@{
+    ViewData["Title"] = Model.Rom.Name + " : " + Model.Name;
+}
+<section class="hero is-primary">
+    <div class="hero-body">
+        <div class="container">
+            <h1 class="title">
+                @Model.Rom.Name : @Model.Name
+            </h1>
+        </div>
+    </div>
+</section>
+<section class="section">
+    <div class="field is-horizontal">
+        <div class="field-label label">Rom</div>
+        <div class="field-body">
+            <a asp-controller="Roms" asp-action="View" asp-route-id="@Model.RomId"></a> @Model.Rom.Name
+        </div>
+    </div>
+    <div class="field is-horizontal">
+        <div class="field-label label">Description</div>
+        <div class="field-body">
+            @Model.Description
+        </div>
+    </div>
+    <div class="field is-horizontal">
+        <div class="field-label label">Length</div>
+        <div class="field-body">
+            @Model.Length
+        </div>
+    </div>
+</section>
+<section class="section">
+    <h3 class="title">Results</h3>
+    <table class="table" style="width: 100%">
+        <thead>
+        <tr>
+            <th>Build</th>
+            <th>Bot</th>
+            <th>Result</th>
+            <th>Time Taken</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var result in Model.Results)
+        {
+            <tr>
+                <td>
+                    <a asp-controller="Builds" asp-action="View" asp-route-id="@result.CitraBuildId">@result.CitraBuild.GitHash @result.CitraBuild.BuildType</a>
+                </td>
+                <td>
+                    <a asp-controller="JanitraBots" asp-action="View" asp-route-id="@result.JanitraBotId">@result.JanitraBot.Name</a> (@result.JanitraBot.Os)
+                </td>
+                <td>@result.ExecutionResult</td>
+                <td>@result.TimeTaken</td>
+                <td><a asp-action="View" asp-route-id="@result.RomMovieResultId">View</a></td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</section>

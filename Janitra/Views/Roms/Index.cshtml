@@ -1,0 +1,44 @@
+﻿@model IEnumerable<Janitra.Data.Models.Rom>
+
+@{
+    ViewData["Title"] = "Roms List";
+}
+<section class="hero is-primary">
+    <div class="hero-body">
+        <div class="container">
+            <h1 class="title">
+                Roms
+            </h1>
+            <h2 class="subtitle">
+                Commercial Roms that we run tests against to check compatibility
+            </h2>
+        </div>
+    </div>
+</section>
+<table class="table" style="width: 100%">
+    <thead>
+    <tr>
+        <th>Rom Name</th>
+        <th>Rom Type</th>
+        <th>Test Count</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var rom in Model)
+    {
+        <tr>
+            <td style="white-space: nowrap">
+                <a asp-action="View" asp-route-id="@rom.RomId">@rom.Name</a>
+            </td>
+            <td>@rom.RomType</td>
+            <td>@rom.Movies.Count</td>
+        </tr>
+    }
+    </tbody>
+</table>
+@if (User.IsInRole("Developer"))
+{
+    <section class="section">
+        <a asp-action="Add" class="button">Add a Rom</a>
+    </section>
+}
