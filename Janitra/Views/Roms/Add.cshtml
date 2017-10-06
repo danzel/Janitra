@@ -1,0 +1,104 @@
+﻿@model Janitra.Controllers.AddRomViewModel
+@{
+    ViewData["Title"] = "Add Rom";
+}
+
+<section class="hero is-primary">
+    <div class="hero-body">
+        <div class="container">
+            <h1 class="title">
+                Add Rom
+            </h1>
+            <h2 class="subtitle">
+                Add a new commercial rom for compatibility testing
+            </h2>
+        </div>
+    </div>
+</section>
+<section class="section">
+    <input type="file" id="rom-scanner" style="display: none" />
+    <form asp-action="Add">
+        <div class="field is-horizontal">
+            <div class="field-label">
+                <label class="label">Rom Name</label>
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <input class="input" type="text" asp-for="Name" /><span class="help">In the format: <code>Game Title (Region)</code></span>
+                    <span asp-validation-for="Name" class="help is-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="field is-horizontal">
+            <div class="field-label">
+                <label class="label">Rom Type</label>
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <select asp-for="RomType" asp-items="Html.GetEnumSelectList<Janitra.Data.Models.RomType>()">
+                        <option selected="selected" value="">Please select a rom type</option>
+                    </select>
+                    <span asp-validation-for="RomType" class="help is-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="field is-horizontal">
+            <div class="field-label">
+                <!-- Left empty for spacing -->
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    
+                    <button class="button" id="scan-rom">Scan Rom</button>
+                    <span class="help">Scan a rom file to get the name and calculate the hash. Calculated in the browser, file is not uploaded</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="field is-horizontal">
+            <div class="field-label">
+                <label class="label">File Name</label>
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <input class="input" type="text" asp-for="RomFileName" id="file-name" disabled="disabled"/>
+                    <span class="help">The file name when dumped using GodMode9 in trim mode (TODO: What about non cartridge dumps)</span>
+                    <span asp-validation-for="RomFileName" class="help is-danger"></span>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="field is-horizontal">
+            <div class="field-label">
+                <label class="label">Rom Hash (SHA256)</label>
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <input class="input" type="text" asp-for="RomSha256" id="file-hash" disabled="disabled" />
+                    <span asp-validation-for="RomSha256" class="help is-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="field is-horizontal">
+            <div class="field-label">
+                <!-- Left empty for spacing -->
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <div class="control">
+                        <button type="submit" class="button is-primary">Add Rom</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</section>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsSHA/2.3.1/sha256.js" integrity="sha256-NyuvLfsvfCfE+ceV6/W19H+qVp3M8c9FzAgj72CW39w=" crossorigin="anonymous"></script>
+    <script src="~/js/roms-add.js" asp-append-version="true"></script>
+}
