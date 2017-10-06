@@ -1,0 +1,78 @@
+﻿@model Janitra.Data.Models.RomMovieResult
+
+@{
+    ViewData["Title"] = Model.RomMovie.Rom.Name + " : " + Model.RomMovie.Name;
+}
+<section class="hero is-primary">
+    <div class="hero-body">
+        <div class="container">
+            <h1 class="title">
+                @Model.RomMovie.Rom.Name : @Model.RomMovie.Name
+            </h1>
+        </div>
+    </div>
+</section>
+<section class="section">
+    <div class="field is-horizontal">
+        <div class="field-label label">Rom</div>
+        <div class="field-body">
+            <a asp-controller="Roms" asp-action="View" asp-route-id="@Model.RomMovie.RomId">@Model.RomMovie.Rom.Name</a>
+        </div>
+    </div>
+    <div class="field is-horizontal">
+        <div class="field-label label">Movie</div>
+        <div class="field-body">
+            <a asp-controller="Movies" asp-action="View" asp-route-id="@Model.RomMovie.RomMovieId">@Model.RomMovie.Name</a>
+        </div>
+    </div>
+    <div class="field is-horizontal">
+        <div class="field-label label">Build</div>
+        <div class="field-body">
+            <a asp-controller="Builds" asp-action="View" asp-route-id="@Model.CitraBuildId">@Model.CitraBuild.GitHash</a>
+        </div>
+    </div>
+    <div class="field is-horizontal">
+        <div class="field-label label">Submitted By</div>
+        <div class="field-body">
+            <a asp-controller="JanitraBots" asp-action="View" asp-route-id="@Model.JanitraBot.JanitraBotId">@Model.JanitraBot.Name</a>
+        </div>
+    </div>
+    <div class="field is-horizontal">
+        <div class="field-label label">Time Taken</div>
+        <div class="field-body">
+            @Model.TimeTaken (@(Math.Round(100 * Model.RomMovie.Length / Model.TimeTaken, 1))%)
+        </div>
+    </div>
+    <div class="field is-horizontal">
+        <div class="field-label label">Execution Result</div>
+        <div class="field-body">
+            @Model.ExecutionResult
+        </div>
+    </div>
+</section>
+<section class="section">
+    <h3 class="title">Screenshots</h3>
+    <table class="table" style="width: 100%">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Top</th>
+            <th>Bottom</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var screenshot in Model.Screenshots.OrderBy(s => s.FrameNumber))
+        {
+            <tr>
+                <td>@screenshot.FrameNumber</td>
+                <td>
+                    <img src="@screenshot.TopImageUrl"/>
+                </td>
+                <td>
+                    <img src="@screenshot.BottomImageUrl"/>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</section>

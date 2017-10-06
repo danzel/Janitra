@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Janitra.Data.Models
@@ -26,5 +27,6 @@ namespace Janitra.Data.Models
 		public CitraBuild CitraBuild { get; set; }
 		public JanitraBot JanitraBot { get; set; }
 		public RomMovie RomMovie { get; set; }
+		public ICollection<RomMovieResultScreenshot> Screenshots { get; set; }
 	}
 }
