@@ -1,13 +1,13 @@
-﻿@model Janitra.Data.Models.RomMovieResult
+﻿@model Janitra.Controllers.MovieResultViewViewModel
 
 @{
-    ViewData["Title"] = Model.RomMovie.Rom.Name + " : " + Model.RomMovie.Name;
+    ViewData["Title"] = Model.Result.RomMovie.Rom.Name + " : " + Model.Result.RomMovie.Name;
 }
 <section class="hero is-primary">
     <div class="hero-body">
         <div class="container">
             <h1 class="title">
-                @Model.RomMovie.Rom.Name : @Model.RomMovie.Name
+                @Model.Result.RomMovie.Rom.Name : @Model.Result.RomMovie.Name
             </h1>
         </div>
     </div>
@@ -16,37 +16,50 @@
     <div class="field is-horizontal">
         <div class="field-label label">Rom</div>
         <div class="field-body">
-            <a asp-controller="Roms" asp-action="View" asp-route-id="@Model.RomMovie.RomId">@Model.RomMovie.Rom.Name</a>
+            <a asp-controller="Roms" asp-action="View" asp-route-id="@Model.Result.RomMovie.RomId">@Model.Result.RomMovie.Rom.Name</a>
         </div>
     </div>
     <div class="field is-horizontal">
         <div class="field-label label">Movie</div>
         <div class="field-body">
-            <a asp-controller="Movies" asp-action="View" asp-route-id="@Model.RomMovie.RomMovieId">@Model.RomMovie.Name</a>
+            <a asp-controller="Movies" asp-action="View" asp-route-id="@Model.Result.RomMovie.RomMovieId">@Model.Result.RomMovie.Name</a>
         </div>
     </div>
     <div class="field is-horizontal">
         <div class="field-label label">Build</div>
         <div class="field-body">
-            <a asp-controller="Builds" asp-action="View" asp-route-id="@Model.CitraBuildId">@Model.CitraBuild.GitHash</a>
+            <a asp-controller="Builds" asp-action="View" asp-route-id="@Model.Result.CitraBuildId">@Model.Result.CitraBuild.GitHash</a>
         </div>
     </div>
     <div class="field is-horizontal">
         <div class="field-label label">Submitted By</div>
         <div class="field-body">
-            <a asp-controller="JanitraBots" asp-action="View" asp-route-id="@Model.JanitraBot.JanitraBotId">@Model.JanitraBot.Name</a>
+            <a asp-controller="JanitraBots" asp-action="View" asp-route-id="@Model.Result.JanitraBot.JanitraBotId">@Model.Result.JanitraBot.Name</a>
         </div>
     </div>
     <div class="field is-horizontal">
         <div class="field-label label">Time Taken</div>
         <div class="field-body">
-            @Model.TimeTaken (@(Math.Round(100 * Model.RomMovie.Length / Model.TimeTaken, 1))%)
+            @Model.Result.TimeTaken (@(Math.Round(100 * Model.Result.RomMovie.Length / Model.Result.TimeTaken, 1))%)
         </div>
     </div>
     <div class="field is-horizontal">
         <div class="field-label label">Execution Result</div>
         <div class="field-body">
-            @Model.ExecutionResult
+            @Model.Result.ExecutionResult
+        </div>
+    </div>
+    <div class="field is-horizontal">
+        <div class="field-label label">Compare With</div>
+        <div class="field-body">
+            @if (Model.MasterResultId.HasValue)
+            {
+                <a class="button" asp-action="Compare" asp-route-leftId="@Model.Result.RomMovieResultId" asp-route-rightId="@Model.MasterResultId.Value">Latest Master</a>
+            }
+            else
+            {
+                <span>This bot has not ran this test against the latest master build yet</span>
+            }
         </div>
     </div>
 </section>
@@ -61,7 +74,7 @@
         </tr>
         </thead>
         <tbody>
-        @foreach (var screenshot in Model.Screenshots.OrderBy(s => s.FrameNumber))
+        @foreach (var screenshot in Model.Result.Screenshots.OrderBy(s => s.FrameNumber))
         {
             <tr>
                 <td>@screenshot.FrameNumber</td>
