@@ -44,6 +44,7 @@ namespace Janitra.Data.Models
 		//Navigation Fields
 		public User AddedByUser { get; set; }
 
+		public ICollection<RomMovieResult> RomMovieResults { get; set; }
 		public ICollection<TestResult> TestResults { get; set; }
 	}
 }

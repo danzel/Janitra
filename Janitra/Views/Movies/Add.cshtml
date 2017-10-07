@@ -1,0 +1,93 @@
+﻿@model Janitra.Controllers.AddMovieViewModel
+@{
+    ViewData["Title"] = "Add Rom";
+}
+
+<section class="hero is-primary">
+    <div class="hero-body">
+        <div class="container">
+            <h1 class="title">
+                Add Movie
+            </h1>
+            <h2 class="subtitle">
+                Add a movie for compatibility testing
+            </h2>
+        </div>
+    </div>
+</section>
+<section class="section">
+    <input type="file" id="rom-scanner" style="display: none"/>
+    <form asp-action="Add" enctype="multipart/form-data">
+        <input type="hidden" asp-for="RomId" />
+
+        <div class="field is-horizontal">
+            <div class="field-label">
+                <label class="label">Movie Name</label>
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <input class="input" type="text" asp-for="Name"/>
+                    <span asp-validation-for="Name" class="help is-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="field is-horizontal">
+            <div class="field-label">
+                <label class="label">Description</label>
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <textarea class="textarea" asp-for="Description"></textarea>
+                    <span asp-validation-for="Description" class="help is-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="field is-horizontal">
+            <div class="field-label">
+                <label class="label">Movie File</label>
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <input class="input" type="file" asp-for="MovieFile"/>
+                    <span asp-validation-for="MovieFile" class="help is-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="field is-horizontal">
+            <div class="field-label">
+                <label class="label">Citra Region</label>
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <select asp-for="CitraRegionValue">
+                        <option value="-1">Auto-select (default)</option>
+                        <option value="0">Japan</option>
+                        <option value="1">USA</option>
+                        <option value="2">Europe</option>
+                        <option value="3">Australia</option>
+                        <option value="4">China</option>
+                        <option value="5">Korea</option>
+                        <option value="6">Taiwan</option>
+                    </select>
+                    <span asp-validation-for="CitraRegionValue" class="help is-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="field is-horizontal">
+            <div class="field-label">
+                <!-- Left empty for spacing -->
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <div class="control">
+                        <button type="submit" class="button is-primary">Add Movie</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</section>

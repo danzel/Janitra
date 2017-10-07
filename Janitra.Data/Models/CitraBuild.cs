@@ -59,6 +59,7 @@ namespace Janitra.Data.Models
 		[Required]
 		public User AddedByUser { get; set; }
 
+		public ICollection<RomMovieResult> RomMovieResults { get; set; }
 		public ICollection<TestResult> TestResults { get; set; }
 	}
 }

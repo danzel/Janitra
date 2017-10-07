@@ -17,8 +17,6 @@ namespace Janitra.Data.Models
 		[Required, Url]
 		public string LogUrl { get; set; }
 
-		//TODO: Screenshots
-
 		public TimeSpan TimeTaken { get; set; }
 
 		public ExecutionResult ExecutionResult { get; set; }

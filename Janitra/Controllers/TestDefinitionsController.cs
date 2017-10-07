@@ -53,6 +53,7 @@ namespace Janitra.Controllers
 		{
 			if (ModelState.IsValid)
 			{
+				//TODO: Verify movie file
 				var movieBytes = new byte[test.MovieFile.Length];
 				var movie = new MemoryStream(movieBytes);
 				await test.MovieFile.CopyToAsync(movie);

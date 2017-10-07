@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Janitra.Data.Models
 {
@@ -17,5 +14,8 @@ namespace Janitra.Data.Models
 		public string TopImageUrl { get; set; }
 		[Required, Url]
 		public string BottomImageUrl { get; set; }
+
+		//Navigation Fields
+		public RomMovieResult RomMovieResult { get; set; }
 	}
 }

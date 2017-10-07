@@ -20,15 +20,13 @@ namespace Janitra.Data.Models
 		[Required]
 		public string RomFileName { get; set; }
 
+		//Maybe add: Product Code (CTR-?-????), Programid (16 chars hex string)
+
 		/// <summary>
 		/// Hex encoded sha256 hash value of the ROM (Lowercase)
 		/// </summary>
-		[Required]
-		[MinLength(64)]
-		[MaxLength(64)]
+		[Required, MinLength(64), MaxLength(64)]
 		public string RomSha256 { get; set; }
-
-		//TODO: Additional files and where to place them
 
 		//Navigation Fields
 		public User AddedByUser { get; set; }

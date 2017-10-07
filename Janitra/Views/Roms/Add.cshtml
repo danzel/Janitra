@@ -52,7 +52,7 @@
                 <div class="field">
                     
                     <button class="button" id="scan-rom">Scan Rom</button>
-                    <span class="help">Scan a rom file to get the name and calculate the hash. Calculated in the browser, file is not uploaded</span>
+                    <span class="help">Scan a rom file to get the name and calculate the hash. Calculated in the browser, file is not uploaded. This is quite slow however, it is recommended to calculate them offline and enter them.</span>
                 </div>
             </div>
         </div>
@@ -63,7 +63,7 @@
             </div>
             <div class="field-body">
                 <div class="field">
-                    <input class="input" type="text" asp-for="RomFileName" id="file-name" disabled="disabled"/>
+                    <input class="input" type="text" asp-for="RomFileName" id="file-name" />
                     <span class="help">The file name when dumped using GodMode9 in trim mode (TODO: What about non cartridge dumps)</span>
                     <span asp-validation-for="RomFileName" class="help is-danger"></span>
                 </div>
@@ -77,7 +77,8 @@
             </div>
             <div class="field-body">
                 <div class="field">
-                    <input class="input" type="text" asp-for="RomSha256" id="file-hash" disabled="disabled" />
+                    <input class="input" type="text" asp-for="RomSha256" id="file-hash" />
+                    <span class="help">Use a tool suck as <a href="http://quickhash-gui.org/">QuickHash</a> to calculate it, or <code>Scan Rom</code> above</span>
                     <span asp-validation-for="RomSha256" class="help is-danger"></span>
                 </div>
             </div>

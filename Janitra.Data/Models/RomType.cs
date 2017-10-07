@@ -5,7 +5,7 @@
 		/// <summary>
 		/// A 3DS Rom. A game available on cartridge (possibly also downloadable from the eshop)
 		/// </summary>
-		Rom3DS,
+		Cartridge,
 		/// <summary>
 		/// A System Application, installed as part of the firmware
 		/// </summary>
