@@ -41,6 +41,8 @@ namespace Janitra.Controllers.Api
 			{
 				cfg.CreateMap<RomMovieResult, JsonRomMovieResult>(MemberList.Destination);
 				cfg.CreateMap<NewRomMovieResult, RomMovieResult>(MemberList.Source)
+					.ForSourceMember(nrmr => nrmr.TimeTakenSeconds, o => o.Ignore())
+					.ForMember(rmr => rmr.TimeTaken, o => o.ResolveUsing(nrmr => TimeSpan.FromSeconds(nrmr.TimeTakenSeconds)))
 					.ForSourceMember(nrmr => nrmr.AccessKey, o => o.Ignore())
 					.ForSourceMember(nrmr => nrmr.Log, o => o.Ignore())
 					.ForSourceMember(nrmr => nrmr.Screenshots, o => o.Ignore())
@@ -137,6 +139,9 @@ namespace Janitra.Controllers.Api
 
 			[Required]
 			public byte[] Log { get; set; }
+
+			[Required]
+			public double TimeTakenSeconds { get; set; }
 
 			[Required]
 			public NewScreenshot[] Screenshots { get; set; }

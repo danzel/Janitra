@@ -53,6 +53,15 @@ namespace Janitra.Controllers
 				var movieStream = new MemoryStream(movieBytes);
 				await addMovie.MovieFile.CopyToAsync(movieStream);
 
+				//Calculate movie length by counting how many PadAndCircle are in the file, there are 234/second
+				int padCount = 0;
+				for (var i = 256; i < movieBytes.Length; i += 7)
+				{
+					if (movieBytes[i] == 0)
+						padCount++;
+				}
+				var length = TimeSpan.FromSeconds(padCount / 234.0);
+
 				var movie = new RomMovie
 				{
 					ActivelyTesting = true,
@@ -60,7 +69,7 @@ namespace Janitra.Controllers
 					AddedByUser = _currentUser.User,
 					CitraRegionValue = addMovie.CitraRegionValue,
 					Description = addMovie.Description,
-					//TODO: Length = TODO: Calculate from movie file
+					Length = length,
 					MovieUrl = await _fileStorageService.StoreMovie(movieBytes),
 					MovieSha256 = SHA256Hash.HashBytes(movieBytes),
 					Name = addMovie.Name,
