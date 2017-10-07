@@ -12,6 +12,7 @@ namespace Janitra.Data
 		public DbSet<TestRom> TestRoms { get; set; }
 		public DbSet<Rom> Roms { get; set; }
 		public DbSet<RomMovie> RomMovies { get; set; }
+		public DbSet<RomMovieResult> RomMovieResults { get; set; }
 		public DbSet<User> Users { get; set; }
 
 		/// <inheritdoc />

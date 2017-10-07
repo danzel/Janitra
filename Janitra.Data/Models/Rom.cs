@@ -10,6 +10,9 @@ namespace Janitra.Data.Models
 	{
 		public int RomId { get; set; }
 
+		/// <summary>
+		/// In the format: Game Name (Region)
+		/// </summary>
 		[Required]
 		public string Name { get; set; }
 

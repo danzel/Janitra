@@ -30,7 +30,11 @@ namespace Janitra.Controllers
 
 		public async Task<IActionResult> View(int id)
 		{
-			return View(await _context.RomMovies.Include(r => r.Rom).Include(r => r.Results).SingleAsync(r => r.RomMovieId == id));
+			return View(await _context.RomMovies
+				.Include(rm => rm.Rom)
+				.Include(rm => rm.Results).ThenInclude(r => r.CitraBuild)
+				.Include(rm => rm.Results).ThenInclude(r => r.JanitraBot)
+				.SingleAsync(r => r.RomMovieId == id));
 		}
 
 		[HttpGet]

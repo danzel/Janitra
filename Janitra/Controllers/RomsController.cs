@@ -31,7 +31,7 @@ namespace Janitra.Controllers
 
 		public async Task<IActionResult> View(int id)
 		{
-			return View(await _context.Roms.Include(r => r.Movies).SingleAsync(r => r.RomId == id));
+			return View(await _context.Roms.Include(r => r.Movies).ThenInclude(m => m.Results).SingleAsync(r => r.RomId == id));
 		}
 
 		[Authorize(Roles = "Developer")]

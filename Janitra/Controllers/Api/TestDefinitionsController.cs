@@ -33,11 +33,9 @@ namespace Janitra.Controllers.Api
 		{
 			var config = new MapperConfiguration(cfg =>
 			{
-				cfg.CreateMap<TestDefinition, JsonTestDefinition>(MemberList.Destination)
-					.ForMember(jjb => jjb.AddedByUserName, o => o.MapFrom(jb => jb.AddedByUser.OAuthName));
+				cfg.CreateMap<TestDefinition, JsonTestDefinition>(MemberList.Destination);
 
-				cfg.CreateMap<TestRom, JsonTestRom>(MemberList.Destination)
-					.ForMember(jtr => jtr.AddedByUserName, o => o.MapFrom(tr => tr.AddedByUser.OAuthName));
+				cfg.CreateMap<TestRom, JsonTestRom>(MemberList.Destination);
 			});
 
 			config.AssertConfigurationIsValid();
@@ -45,16 +43,18 @@ namespace Janitra.Controllers.Api
 			return config.CreateMapper();
 		}
 
+		/// <summary>
+		/// Get a list of all TestDefinitions that are being actively tested
+		/// </summary>
+		/// <returns></returns>
 		[HttpGet("list")]
-		public async Task<JsonTestDefinition[]> List([FromQuery] bool includeInactive = false)
+		public async Task<JsonTestDefinition[]> List()
 		{
 			IQueryable<TestDefinition> query = _context.TestDefinitions
+				.Where(t => t.ActivelyTesting)
 				.Include(td => td.TestRom)
-				.Include(td => td.AddedByUser)
 				.OrderByDescending(td => td.TestDefinitionId);
 
-			if (!includeInactive)
-				query = query.Where(t => t.ActivelyTesting);
 
 			return await query
 				.Select(t => _mapper.Map<JsonTestDefinition>(t))
@@ -69,9 +69,6 @@ namespace Janitra.Controllers.Api
 			[Required]
 			public string TestName { get; set; }
 
-			[Required]
-			public string Notes { get; set; }
-
 			/// <summary>
 			/// Url the movie can be downloaded from
 			/// </summary>
@@ -82,15 +79,7 @@ namespace Janitra.Controllers.Api
 			public string MovieSha256 { get; set; }
 
 			[Required]
-			public bool ActivelyTesting { get; set; }
-
-			[Required]
 			public DateTimeOffset AddedAt { get; set; }
-			[Required]
-			public int AddedByUserId { get; set; }
-
-			[Required]
-			public string AddedByUserName { get; set; }
 
 			[Required]
 			public JsonTestRom TestRom { get; set; }
@@ -106,15 +95,6 @@ namespace Janitra.Controllers.Api
 
 			[Required]
 			public string RomSha256 { get; set; }
-
-			[Required]
-			public string CodeUrl { get; set; }
-
-			[Required]
-			public int AddedByUserId { get; set; }
-
-			[Required]
-			public string AddedByUserName { get; set; }
 		}
 	}
 }
