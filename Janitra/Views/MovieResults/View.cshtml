@@ -50,6 +50,17 @@
         </div>
     </div>
     <div class="field is-horizontal">
+        <div class="field-label label">Logs</div>
+        <div class="field-body">
+            <a href="@Model.Result.LogUrl" class="button is-info">
+                <span class="icon">
+                    <i class="fa fa-file-text-o"></i>
+                </span>
+                <span>Download Logs</span>
+            </a>
+        </div>
+    </div>
+    <div class="field is-horizontal">
         <div class="field-label label">Compare With</div>
         <div class="field-body">
             @if (Model.MasterResultId.HasValue)
