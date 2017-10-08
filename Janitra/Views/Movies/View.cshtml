@@ -16,7 +16,7 @@
     <div class="field is-horizontal">
         <div class="field-label label">Rom</div>
         <div class="field-body">
-            <a asp-controller="Roms" asp-action="View" asp-route-id="@Model.RomId"></a> @Model.Rom.Name
+            <a asp-controller="Roms" asp-action="View" asp-route-id="@Model.RomId">@Model.Rom.Name</a>
         </div>
     </div>
     <div class="field is-horizontal">
@@ -31,6 +31,20 @@
             @Model.Length
         </div>
     </div>
+    
+    <div class="field is-horizontal">
+        <div class="field-label label"><!-- padding --></div>
+        <div class="field-body">
+            <a class="button is-info" href="@Model.MovieUrl">
+                <span class="icon">
+                    <i class="fa fa-file-video-o"></i>
+                </span>
+                <span>Download Movie</span>
+            </a>
+        </div>
+    </div>
+
+
 </section>
 <section class="section">
     <h3 class="title">Results</h3>
@@ -56,7 +70,7 @@
                 </td>
                 <td>@result.ExecutionResult</td>
                 <td>@result.TimeTaken</td>
-                <td><a asp-action="View" asp-route-id="@result.RomMovieResultId">View</a></td>
+                <td><a asp-controller="MovieResults" asp-action="View" asp-route-id="@result.RomMovieResultId">View</a></td>
             </tr>
         }
         </tbody>

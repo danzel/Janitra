@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Janitra.Services;
 using Janitra.Data;
 using Janitra.Data.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -44,12 +45,14 @@ namespace Janitra.Controllers
 			});
 		}
 
+		[Authorize(Roles = "Developer")]
 		[HttpGet]
 		public async Task<IActionResult> Add()
 		{
 			return View();
 		}
 
+		[Authorize(Roles = "Developer")]
 		[HttpPost]
 		public async Task<IActionResult> Add(AddJanitraBotViewModel bot)
 		{
@@ -78,6 +81,7 @@ namespace Janitra.Controllers
 			return View(bot);
 		}
 
+		[Authorize(Roles = "Developer")]
 		[HttpPost]
 		public async Task<IActionResult> ResetAccessKey(ResetAccessKeyViewModel reset)
 		{

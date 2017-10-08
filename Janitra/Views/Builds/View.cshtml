@@ -1,4 +1,4 @@
-﻿@model Janitra.Data.Models.CitraBuild
+﻿@model Janitra.Controllers.ViewBuildViewModel
 @{
     ViewData["Title"] = "View Build";
 }
@@ -6,7 +6,7 @@
     <div class="hero-body">
         <div class="container">
             <h1 class="title">
-                Build @Model.CitraBuildId <span class="tag">@Model.BuildType</span>
+                Build @Model.Build.CitraBuildId <span class="tag">@Model.Build.BuildType</span>
             </h1>
         </div>
     </div>
@@ -18,7 +18,7 @@
         </div>
         <div class="field-body">
             <div class="field">
-                <a target="_blank" href=@("https://github.com/citra-emu/citra/commit/" + Model.GitHash)>@Model.GitHash</a>
+                <a target="_blank" href=@("https://github.com/citra-emu/citra/commit/" + Model.Build.GitHash)>@Model.Build.GitHash</a>
             </div>
         </div>
     </div>
@@ -28,7 +28,7 @@
         </div>
         <div class="field-body">
             <div class="field">
-                @Model.CommitTime.ToString("yyyy-MM-dd")
+                @Model.Build.CommitTime.ToString("yyyy-MM-dd")
             </div>
         </div>
     </div>
@@ -38,7 +38,7 @@
         </div>
         <div class="field-body">
             <div class="field">
-                @foreach (var line in @Model.BuildNotes.Split('\n'))
+                @foreach (var line in @Model.Build.BuildNotes.Split('\n'))
                 {
                     @line<br/>
                 }
@@ -52,25 +52,25 @@
         </div>
         <div class="field-body">
             <div class="field">
-                @if (!string.IsNullOrEmpty(Model.WindowsUrl))
+                @if (!string.IsNullOrEmpty(Model.Build.WindowsUrl))
                 {
-                    <a href=@Model.WindowsUrl>
+                    <a href=@Model.Build.WindowsUrl>
                         <span class="icon">
                             <i class="fa fa-windows"></i>
                         </span>
                     </a>
                 }
-                @if (!string.IsNullOrEmpty(Model.LinuxUrl))
+                @if (!string.IsNullOrEmpty(Model.Build.LinuxUrl))
                 {
-                    <a href=@Model.LinuxUrl>
+                    <a href=@Model.Build.LinuxUrl>
                         <span class="icon">
                             <i class="fa fa-linux"></i>
                         </span>
                     </a>
                 }
-                @if (!string.IsNullOrEmpty(Model.OsxUrl))
+                @if (!string.IsNullOrEmpty(Model.Build.OsxUrl))
                 {
-                    <a href=@Model.OsxUrl>
+                    <a href=@Model.Build.OsxUrl>
                         <span class="icon">
                             <i class="fa fa-apple"></i>
                         </span>
@@ -81,5 +81,34 @@
     </div>
 </section>
 <section class="section">
-    <vc:test-results-for-build-table citra-build-id="@Model.CitraBuildId"></vc:test-results-for-build-table>
+    <h3 class="title is-4">HW Test Results</h3>
+    <vc:test-results-for-build-table citra-build-id="@Model.Build.CitraBuildId"></vc:test-results-for-build-table>
+</section>
+<section class="section">
+    <h3 class="title is-4">Rom Test Results</h3>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Rom</th>
+            <th>Movie</th>
+            <th>Ran On</th>
+            <th>Result</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var result in Model.MovieResults)
+        {
+            <tr>
+                <td><a asp-controller="Roms" asp-action="View" asp-route-id="@result.RomMovie.RomId">@result.RomMovie.Rom.Name</a></td>
+                <td><a asp-controller="Movies" asp-action="View" asp-route-id="@result.RomMovieId">@result.RomMovie.Name</a></td>
+                <td><a asp-controller="JanitraBots" asp-action="View" asp-route-id="@result.JanitraBotId">@result.JanitraBot.Name</a></td>
+                <td>@result.ExecutionResult</td>
+                <td>
+                    <a asp-controller="MovieResults" asp-action="View" asp-route-id="@result.RomMovieResultId">View</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
 </section>

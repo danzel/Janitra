@@ -38,7 +38,7 @@
     @if (User.IsInRole("Developer"))
     {
         <section class="section">
-            <a asp-controller="Movies" asp-action="Add" class="button">Add a Movie</a>
+            <a asp-controller="Movies" asp-action="Add" asp-route-id="@Model.RomId" class="button">Add a Movie</a>
         </section>
     }
 </section>

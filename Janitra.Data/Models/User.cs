@@ -32,6 +32,8 @@ namespace Janitra.Data.Models
 
 		public ICollection<CitraBuild> AddedCitraBuilds { get; set; }
 		public ICollection<JanitraBot> AddedJanitraBots { get; set; }
+		public ICollection<Rom> AddedRoms { get; set; }
+		public ICollection<RomMovie> AddedRomMovies { get; set; }
 		public ICollection<TestDefinition> AddedTestDefinitions { get; set; }
 		public ICollection<TestRom> AddedTestRoms { get; set; }
 	}

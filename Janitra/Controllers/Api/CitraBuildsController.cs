@@ -3,10 +3,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using Janitra.Services;
 using Janitra.Data;
 using Janitra.Data.Models;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
@@ -21,27 +19,21 @@ namespace Janitra.Controllers.Api
 	public class CitraBuildsController : Controller
 	{
 		private readonly JanitraContext _context;
-		private readonly CurrentUser _currentUser;
 		private readonly IMapper _mapper;
 
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public CitraBuildsController(JanitraContext context, CurrentUser currentUser)
+		public CitraBuildsController(JanitraContext context)
 		{
 			_context = context;
-			_currentUser = currentUser;
 
 			_mapper = CreateMapper();
 		}
 
 		private IMapper CreateMapper()
 		{
-			var config = new MapperConfiguration(cfg =>
-			{
-				cfg.CreateMap<CitraBuild, JsonCitraBuild>(MemberList.Destination);
-				cfg.CreateMap<NewCitraBuild, CitraBuild>(MemberList.Source);
-			});
+			var config = new MapperConfiguration(cfg => { cfg.CreateMap<CitraBuild, JsonCitraBuild>(MemberList.Destination); });
 
 			config.AssertConfigurationIsValid();
 
@@ -49,89 +41,37 @@ namespace Janitra.Controllers.Api
 		}
 
 		/// <summary>
-		/// Get the list of all Citra Builds.
+		/// Get the list of all Citra Builds that are being actively tested
 		/// </summary>
-		/// <remarks>
-		/// Defaults to only including active ones.
-		/// Returns the latest builds first.
-		/// </remarks>
 		[HttpGet("list")]
-		public async Task<JsonCitraBuild[]> List([FromQuery] bool includeInactive = false)
+		public async Task<JsonCitraBuild[]> List()
 		{
 			IQueryable<CitraBuild> query = _context.CitraBuilds
+				.Where(cb => cb.ActivelyTesting)
 				.OrderByDescending(c => c.CitraBuildId);
-
-			if (!includeInactive)
-				query = query.Where(cb => cb.ActivelyTesting);
 
 			return await query
 				.Select(c => _mapper.Map<JsonCitraBuild>(c))
 				.ToArrayAsync();
 		}
 
-		/// <summary>
-		/// Gets the given Citra Build
-		/// </summary>
-		/// <param name="citraBuildId"></param>
-		/// <returns></returns>
-		[HttpGet("{citraBuildId}")]
-		public async Task<JsonCitraBuild> Get([FromRoute] int citraBuildId)
-		{
-			return _mapper.Map<JsonCitraBuild>(await _context.CitraBuilds.SingleOrDefaultAsync(b => b.CitraBuildId == citraBuildId));
-		}
-
-		/// <summary>
-		/// Add a Citra Build
-		/// </summary>
-		/// <remarks>
-		/// Only accessible by Developer level users.
-		/// </remarks>
-		[Authorize(Roles = "Developer")]
-		[HttpPost("add")]
-		public async Task Add([FromBody] NewCitraBuild newBuild)
-		{
-			var build = _mapper.Map<CitraBuild>(newBuild);
-			build.ActivelyTesting = true;
-			build.AddedByUser = _currentUser.User;
-			build.DateAdded = DateTimeOffset.UtcNow;
-
-			await _context.CitraBuilds.AddAsync(build);
-			await _context.SaveChangesAsync();
-		}
-
 		public class JsonCitraBuild
 		{
 			[Required]
 			public int CitraBuildId { get; set; }
+
 			[Required]
 			public string GitHash { get; set; }
+
 			[Required]
 			public DateTimeOffset CommitTime { get; set; }
+
 			[Required]
 			[JsonConverter(typeof(StringEnumConverter))]
 			public BuildType BuildType { get; set; }
-			[Required]
-			public string BuildNotes { get; set; }
+
 			[Required]
 			public DateTimeOffset DateAdded { get; set; }
-			[Required]
-			public bool ActivelyTesting { get; set; }
-			public string WindowsUrl { get; set; }
-			public string LinuxUrl { get; set; }
-			public string OsxUrl { get; set; }
-		}
-
-		public class NewCitraBuild
-		{
-			[Required]
-			public string GitHash { get; set; }
-			[Required]
-			public DateTimeOffset CommitTime { get; set; }
-			[Required]
-			[JsonConverter(typeof(StringEnumConverter))]
-			public BuildType BuildType { get; set; }
-			[Required]
-			public string BuildNotes { get; set; }
 
 			public string WindowsUrl { get; set; }
 			public string LinuxUrl { get; set; }

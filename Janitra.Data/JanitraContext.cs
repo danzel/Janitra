@@ -10,6 +10,9 @@ namespace Janitra.Data
 		public DbSet<TestDefinition> TestDefinitions { get; set; }
 		public DbSet<TestResult> TestResults { get; set; }
 		public DbSet<TestRom> TestRoms { get; set; }
+		public DbSet<Rom> Roms { get; set; }
+		public DbSet<RomMovie> RomMovies { get; set; }
+		public DbSet<RomMovieResult> RomMovieResults { get; set; }
 		public DbSet<User> Users { get; set; }
 
 		/// <inheritdoc />
@@ -39,6 +42,59 @@ namespace Janitra.Data
 				.HasOne(jb => jb.AddedByUser)
 				.WithMany(u => u.AddedJanitraBots)
 				.HasForeignKey(jb => jb.AddedByUserId)
+				.OnDelete(DeleteBehavior.Restrict);
+
+
+			//FK Rom* -> AddedByUser
+			modelBuilder.Entity<Rom>()
+				.HasOne(cb => cb.AddedByUser)
+				.WithMany(u => u.AddedRoms)
+				.HasForeignKey(cb => cb.AddedByUserId)
+				.OnDelete(DeleteBehavior.Restrict);
+
+
+			//FK RomMovie* -> AddedByUser
+			modelBuilder.Entity<RomMovie>()
+				.HasOne(cb => cb.AddedByUser)
+				.WithMany(u => u.AddedRomMovies)
+				.HasForeignKey(cb => cb.AddedByUserId)
+				.OnDelete(DeleteBehavior.Restrict);
+
+			//FK RomMovie* -> Rom
+			modelBuilder.Entity<RomMovie>()
+				.HasOne(cb => cb.Rom)
+				.WithMany(u => u.Movies)
+				.HasForeignKey(cb => cb.RomId)
+				.OnDelete(DeleteBehavior.Restrict);
+
+
+			//FK RomMovieResult* -> CitraBuild
+			modelBuilder.Entity<RomMovieResult>()
+				.HasOne(cb => cb.CitraBuild)
+				.WithMany(u => u.RomMovieResults)
+				.HasForeignKey(cb => cb.CitraBuildId)
+				.OnDelete(DeleteBehavior.Restrict);
+
+			//FK RomMovieResult* -> JanitraBot
+			modelBuilder.Entity<RomMovieResult>()
+				.HasOne(cb => cb.JanitraBot)
+				.WithMany(u => u.RomMovieResults)
+				.HasForeignKey(cb => cb.JanitraBotId)
+				.OnDelete(DeleteBehavior.Restrict);
+
+			//FK RomMovieResult* -> Movie
+			modelBuilder.Entity<RomMovieResult>()
+				.HasOne(cb => cb.RomMovie)
+				.WithMany(u => u.Results)
+				.HasForeignKey(cb => cb.RomMovieId)
+				.OnDelete(DeleteBehavior.Restrict);
+
+
+			//FK RomMovieResultScreenshot* -> RomMovieResult
+			modelBuilder.Entity<RomMovieResultScreenshot>()
+				.HasOne(cb => cb.RomMovieResult)
+				.WithMany(u => u.Screenshots)
+				.HasForeignKey(cb => cb.RomMovieResultId)
 				.OnDelete(DeleteBehavior.Restrict);
 
 

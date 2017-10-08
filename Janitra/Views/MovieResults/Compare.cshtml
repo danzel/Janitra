@@ -1,0 +1,78 @@
+﻿@using Microsoft.EntityFrameworkCore.Query.Expressions
+@model Janitra.Controllers.MovieResultsCompareViewModel
+
+@{
+    ViewData["Title"] = "Compare: " + Model.Left.RomMovie.Rom.Name + " : " + Model.Left.RomMovie.Name;
+    var leftScreenshots = Model.Left.Screenshots.OrderBy(s => s.FrameNumber).ToArray();
+    var rightScreenshots = Model.Right.Screenshots.OrderBy(s => s.FrameNumber).ToArray();
+}
+<section class="hero is-primary">
+    <div class="hero-body">
+        <div class="container">
+            <h1 class="title">
+                Compare @Model.Left.RomMovie.Rom.Name : @Model.Left.RomMovie.Name
+            </h1>
+        </div>
+    </div>
+</section>
+TODO: Filter top/bottom screenshot only
+TODO: Compare time taken
+<section class="section">
+    <div class="field is-horizontal">
+        <div class="field-label label">Left</div>
+        <div class="field-body">
+            <a asp-controller="Roms" asp-action="View" asp-route-id="@Model.Left.CitraBuildId">@Model.Left.CitraBuild.GitHash (@Model.Left.CitraBuild.CommitTime) @Model.Left.CitraBuild.BuildType</a>
+        </div>
+    </div>
+    <div class="field is-horizontal">
+        <div class="field-label label">Right</div>
+        <div class="field-body">
+            <a asp-controller="Roms" asp-action="View" asp-route-id="@Model.Right.CitraBuildId">@Model.Right.CitraBuild.GitHash (@Model.Right.CitraBuild.CommitTime) @Model.Right.CitraBuild.BuildType</a>
+        </div>
+    </div>
+</section>
+<section class="section">
+    <h3 class="title">Screenshots</h3>
+    <table class="table" style="width: 100%">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Result @Model.Left.RomMovieResultId</th>
+            <th>Change</th>
+            <th>Result @Model.Right.RomMovieResultId</th>
+        </tr>
+        </thead>
+        <tbody>
+        @for (var i = 0; i < leftScreenshots.Length; i++)
+        {
+            var left = leftScreenshots[i];
+            var right = rightScreenshots[i];
+            <tr>
+                <td>@left.FrameNumber</td>
+                <td style="text-align: center">
+                    <img src="@left.TopImageUrl"/>
+                    <img src="@left.BottomImageUrl"/>
+                </td>
+                <td>
+                    @if (left.TopImageUrl != right.TopImageUrl)
+                    {
+                        <span>Top</span>
+                    }
+                    @if (left.BottomImageUrl != right.BottomImageUrl)
+                    {
+                        <span>Bottom</span>
+                    }
+                    @if (left.TopImageUrl == right.TopImageUrl && left.BottomImageUrl == right.BottomImageUrl)
+                    {
+                        <span>==</span>
+                    }
+                </td>
+                <td style="text-align: center">
+                    <img src="@right.TopImageUrl"/>
+                    <img src="@right.BottomImageUrl"/>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</section>

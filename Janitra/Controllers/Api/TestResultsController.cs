@@ -22,19 +22,17 @@ namespace Janitra.Controllers.Api
 	{
 		private readonly JanitraContext _context;
 		private readonly ILogger<TestResultsController> _logger;
-		private readonly CurrentUser _currentUser;
 		private readonly IFileStorageService _fileStorage;
 		private readonly IMapper _mapper;
 
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public TestResultsController(JanitraContext context, ILogger<TestResultsController> logger, IFileStorageService fileStorage, CurrentUser currentUser)
+		public TestResultsController(JanitraContext context, ILogger<TestResultsController> logger, IFileStorageService fileStorage)
 		{
 			_context = context;
 			_logger = logger;
 			_fileStorage = fileStorage;
-			_currentUser = currentUser;
 
 			_mapper = CreateMapper();
 		}
@@ -43,8 +41,7 @@ namespace Janitra.Controllers.Api
 		{
 			var config = new MapperConfiguration(cfg =>
 			{
-				cfg.CreateMap<TestResult, JsonTestResult>(MemberList.Destination)
-					.ForMember(jtr => jtr.TimeTakenSeconds, o => o.ResolveUsing(tr => tr.TimeTaken.TotalSeconds));
+				cfg.CreateMap<TestResult, JsonTestResult>(MemberList.Destination);
 
 				cfg.CreateMap<NewTestResult, TestResult>(MemberList.Source)
 					.ForSourceMember(ntr => ntr.Log, o => o.Ignore())
@@ -63,22 +60,13 @@ namespace Janitra.Controllers.Api
 		/// <summary>
 		/// Get all of the test results for the given Build, TestDefinition, JanitraBot. Ordered by TestDefinitionId, JanitraBotId
 		/// </summary>
-		/// <param name="citraBuildId">What CitraBuild to fetch TestResults for</param>
-		/// <param name="testDefinitionId">What TestDefinintion to fetch TestResults for</param>
 		/// <param name="janitraBotId">What JanitraBot to fetch TestResults for</param>
 		[HttpGet("list")]
-		public async Task<JsonTestResult[]> List([FromQuery] int citraBuildId, [FromQuery] int? testDefinitionId = null, [FromQuery] int? janitraBotId = null)
+		public async Task<JsonTestResult[]> List([FromQuery] int janitraBotId)
 		{
 			var query = _context.TestResults
-				.Where(tr => tr.CitraBuildId == citraBuildId);
-
-			if (testDefinitionId.HasValue)
-				query = query.Where(tr => tr.TestDefinitionId == testDefinitionId.Value);
-
-			if (janitraBotId.HasValue)
-				query = query.Where(tr => tr.JanitraBotId == janitraBotId.Value);
-
-			query = query.OrderBy(tr => tr.TestDefinitionId).ThenBy(tr => tr.TestResultId);
+				.Where(tr => tr.JanitraBotId == janitraBotId)
+				.OrderBy(tr => tr.TestDefinitionId).ThenBy(tr => tr.TestResultId);
 
 			return await query.Select(tr => _mapper.Map<JsonTestResult>(tr)).ToArrayAsync();
 		}
@@ -137,33 +125,12 @@ namespace Janitra.Controllers.Api
 		{
 			[Required]
 			public int TestResultId { get; set; }
-
 			[Required]
 			public int CitraBuildId { get; set; }
 			[Required]
-			public int JanitraBotId { get; set; }
-			[Required]
 			public int TestDefinitionId { get; set; }
-
 			[Required]
 			public DateTimeOffset ReportedAt { get; set; }
-
-			[Required]
-			public string LogUrl { get; set; }
-			[Required]
-			public string ScreenshotTopUrl { get; set; }
-			[Required]
-			public string ScreenshotBottomUrl { get; set; }
-
-			[Required]
-			[JsonConverter(typeof(StringEnumConverter))]
-			public ExecutionResult ExecutionResult { get; set; }
-			[Required]
-			[JsonConverter(typeof(StringEnumConverter))]
-			public AccuracyStatus AccuracyStatus { get; set; }
-
-			[Required]
-			public double TimeTakenSeconds { get; set; }
 		}
 
 		public class NewTestResult

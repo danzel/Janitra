@@ -45,7 +45,19 @@ namespace Janitra.Controllers
 
 		public async Task<IActionResult> View(int id)
 		{
-			return View(await _context.CitraBuilds.SingleAsync(td => td.CitraBuildId == id));
+			var build = await _context.CitraBuilds.SingleAsync(td => td.CitraBuildId == id);
+
+			var movieResults = await _context.RomMovieResults
+				.Include(rmr => rmr.RomMovie).ThenInclude(rmr => rmr.Rom)
+				.Include(rmr => rmr.JanitraBot)
+				.Where(rmr => rmr.CitraBuildId == id).ToArrayAsync();
+
+			return View(new ViewBuildViewModel
+				{
+					Build = build,
+					MovieResults = movieResults
+				}
+			);
 		}
 
 		[HttpGet]
@@ -76,6 +88,12 @@ namespace Janitra.Controllers
 			}
 			return View(build);
 		}
+	}
+
+	public class ViewBuildViewModel
+	{
+		public CitraBuild Build { get; set; }
+		public RomMovieResult[] MovieResults { get; set; }
 	}
 
 	public class AddBuildViewModel
