@@ -56,18 +56,50 @@
         </div>
     </div>
 
-    <div class="field is-horizontal">
-        <div class="field-label label">Screenshot Top</div>
-        <div class="field-body">
-            <img src="@Model.ScreenshotTopUrl"/>
-        </div>
+    <table class="image-diff">
+        <thead>
+        <tr>
+            <td>Result</td>
+            <td>Diff</td>
+            <td>Reference</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>
+                <img src="@Model.ScreenshotTopUrl" crossorigin="anonymous" id="res-0-a" />
+            </td>
+            <td id="res-0-diff">Loading</td>
+            <td>
+                <img src="@Model.TestDefinition.ReferenceScreenshotTopUrl" crossorigin="anonymous" id="res-0-b" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <img src="@Model.ScreenshotBottomUrl" crossorigin="anonymous" id="res-1-a" />
+            </td>
+            <td id="res-1-diff">Loading</td>
+            <td>
+                <img src="@Model.TestDefinition.ReferenceScreenshotBottomUrl" crossorigin="anonymous" id="res-1-b" />
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="field has-addons">
+        <p class="control">
+            <a class="button is-primary" id="diff-ui-diff">(1) Diff</a>
+        </p>
+        <p class="control">
+            <a class="button" id="diff-ui-bright">(2) Bright</a>
+        </p>
+        <p class="control">
+            <a class="button" id="diff-ui-left">(3) Left</a>
+        </p>
+        <p class="control">
+            <a class="button" id="diff-ui-right">(4) Right</a>
+        </p>
     </div>
-    <div class="field is-horizontal">
-        <div class="field-label label">Screenshot Bottom</div>
-        <div class="field-body">
-            <img src="@Model.ScreenshotBottomUrl" style="padding-left: 40px"/>
-        </div>
-    </div>
+
     <div class="field is-horizontal">
         <div class="field-label label">Logs</div>
         <div class="field-body">
@@ -101,3 +133,11 @@
         </form>
     }
 </section>
+@section Scripts {
+    <script
+        src="https://code.jquery.com/jquery-2.2.4.min.js"
+        integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+        crossorigin="anonymous"></script>
+    <script src="~/js/compare_results.js" asp-append-version="true"></script>
+    <script src="~/js/imagediff.js" asp-append-version="true"></script>
+}

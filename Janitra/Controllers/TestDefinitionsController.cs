@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Janitra.Services;
 using Janitra.Data;
 using Janitra.Data.Models;
+using Janitra.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -28,7 +29,7 @@ namespace Janitra.Controllers
 			_fileStorageService = fileStorageService;
 			_currentUser = currentUser;
 		}
-		
+
 		public async Task<IActionResult> Index()
 		{
 			return View(await _context.TestDefinitions.Include(td => td.TestRom).Where(b => b.ActivelyTesting).OrderBy(b => b.TestDefinitionId).ToArrayAsync());
@@ -54,13 +55,10 @@ namespace Janitra.Controllers
 			if (ModelState.IsValid)
 			{
 				//TODO: Verify movie file
-				var movieBytes = new byte[test.MovieFile.Length];
-				var movie = new MemoryStream(movieBytes);
-				await test.MovieFile.CopyToAsync(movie);
-
-				var romBytes = new byte[test.RomFile.Length];
-				var rom = new MemoryStream(romBytes);
-				await test.RomFile.CopyToAsync(rom);
+				var movieBytes = await test.MovieFile.GetAsBytes();
+				var romBytes = await test.RomFile.GetAsBytes();
+				var topReference = await test.ReferenceScreenshotTop.GetAsPngBytes();
+				var bottomReference = await test.ReferenceScreenshotBottom.GetAsPngBytes();
 
 				var now = DateTimeOffset.UtcNow;
 
@@ -72,6 +70,8 @@ namespace Janitra.Controllers
 					MovieUrl = await _fileStorageService.StoreMovie(movieBytes),
 					MovieSha256 = SHA256Hash.HashBytes(movieBytes),
 					Notes = test.Notes,
+					ReferenceScreenshotTopUrl = await _fileStorageService.StoreScreenshot(topReference),
+					ReferenceScreenshotBottomUrl = await _fileStorageService.StoreScreenshot(bottomReference),
 					TestName = test.TestName,
 					TestRom = new TestRom
 					{
@@ -104,6 +104,12 @@ namespace Janitra.Controllers
 
 		[Required, Url]
 		public string CodeUrl { get; set; }
+
+		[Required]
+		public IFormFile ReferenceScreenshotTop { get; set; }
+
+		[Required]
+		public IFormFile ReferenceScreenshotBottom { get; set; }
 
 		[Required]
 		public IFormFile RomFile { get; set; }

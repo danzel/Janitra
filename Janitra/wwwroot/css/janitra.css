@@ -1,0 +1,11 @@
+﻿
+/* Image Diff Viewer */
+.image-diff {
+    width: 100%;
+}
+.image-diff td {
+    width:30%;
+}
+.image-diff img {
+    width:100%;
+}

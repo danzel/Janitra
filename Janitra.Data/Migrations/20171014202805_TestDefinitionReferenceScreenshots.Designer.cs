@@ -12,9 +12,10 @@ using System;
 namespace Janitra.Data.Migrations
 {
     [DbContext(typeof(JanitraContext))]
-    partial class JanitraContextModelSnapshot : ModelSnapshot
+    [Migration("20171014202805_TestDefinitionReferenceScreenshots")]
+    partial class TestDefinitionReferenceScreenshots
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

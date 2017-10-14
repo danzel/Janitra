@@ -6,13 +6,27 @@
     <div class="hero-body">
         <div class="container">
             <h1 class="title">
-                Add a new Test Definition
+                Add a new Hardware Test
             </h1>
         </div>
     </div>
 </section>
 <section class="section">
     <form asp-action="Add" enctype="multipart/form-data">
+        <div class="field is-horizontal">
+            <div class="field-label">
+                <label class="label"><!--Padding--></label>
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <p>A Hardware Test is a homebrew test rom that tests a particular part of 3DS behaviour.</p>
+                    <p>For Hardware Tests in Janitra, you must provide a reference screenshot (captured on device) that matches the same frame that will be captured by the movie file. The easiest way to do this is to have the HW Test rom display a static result, or have it display a static result when the <code>L</code> button is pressed. Press this button when capturing a screenshot of the result on device, and have the movie replay also press it.</p>
+                    <p>This allows us to test for pixel perfect rendering accuracy!</p>
+                </div>
+            </div>
+        </div>
+
+
         <div class="field is-horizontal">
             <div class="field-label">
                 <label class="label">Test Name</label>
@@ -33,6 +47,31 @@
                 <div class="field">
                     <textarea class="textarea" asp-for="Notes"></textarea>
                     <span asp-validation-for="Notes" class="help is-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="field is-horizontal">
+            <div class="field-label">
+                <label class="label">Top Reference Screenshot</label>
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <input class="input" type="file" asp-for="ReferenceScreenshotTop"/>
+                    <span class="help">Captured on device, use Luma3DS Menu (L+Down+Select) to take it.</span>
+                    <span asp-validation-for="ReferenceScreenshotTop" class="help is-danger"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="field is-horizontal">
+            <div class="field-label">
+                <label class="label">Bottom Reference Screenshot</label>
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <input class="input" type="file" asp-for="ReferenceScreenshotBottom"/>
+                    <span asp-validation-for="ReferenceScreenshotBottom" class="help is-danger"></span>
                 </div>
             </div>
         </div>

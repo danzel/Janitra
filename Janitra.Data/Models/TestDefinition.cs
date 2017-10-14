@@ -21,6 +21,18 @@ namespace Janitra.Data.Models
 		public int TestRomId { get; set; }
 
 		/// <summary>
+		/// Reference screenshot of the result as captured on device
+		/// </summary>
+		[Required, Url]
+		public string ReferenceScreenshotTopUrl { get; set; }
+
+		/// <summary>
+		/// Reference screenshot of the result as captured on device
+		/// </summary>
+		[Required, Url]
+		public string ReferenceScreenshotBottomUrl { get; set; }
+
+		/// <summary>
 		/// Url for the location of the movie file for this test
 		/// </summary>
 		[Required, Url]

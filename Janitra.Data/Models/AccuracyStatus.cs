@@ -11,13 +11,19 @@
 		Unset = 0,
 
 		/// <summary>
-		/// The result is correct
-		/// </summary>
-		Correct = 1,
-
-		/// <summary>
 		/// The result is incorrect
 		/// </summary>
-		Incorrect = 2
+		Incorrect = 1,
+
+
+		/// <summary>
+		/// The result is mostly correct
+		/// </summary>
+		Correct = 2,
+
+		/// <summary>
+		/// The result is pixel perfect with on device
+		/// </summary>
+		Perfect = 3
 	}
 }
