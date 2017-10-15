@@ -66,11 +66,11 @@
         </thead>
         <tbody>
         <tr>
-            <td>
+            <td class="diff-left">
                 <img src="@Model.ScreenshotTopUrl" crossorigin="anonymous" id="res-0-a" />
             </td>
-            <td id="res-0-diff">Loading</td>
-            <td>
+            <td id="res-0-diff" class="diff-container">Loading</td>
+            <td class="diff-right">
                 <img src="@Model.TestDefinition.ReferenceScreenshotTopUrl" crossorigin="anonymous" id="res-0-b" />
             </td>
         </tr>
@@ -87,16 +87,16 @@
     </table>
     <div class="field has-addons">
         <p class="control">
-            <a class="button is-primary" id="diff-ui-diff">(1) Diff</a>
+            <a class="diff-button button is-primary" id="diff-ui-diff">(1) Diff</a>
         </p>
         <p class="control">
-            <a class="button" id="diff-ui-bright">(2) Bright</a>
+            <a class="diff-button button" id="diff-ui-bright">(2) Bright</a>
         </p>
         <p class="control">
-            <a class="button" id="diff-ui-left">(3) Left</a>
+            <a class="diff-button button" id="diff-ui-left">(3) Left</a>
         </p>
         <p class="control">
-            <a class="button" id="diff-ui-right">(4) Right</a>
+            <a class="diff-button button" id="diff-ui-right">(4) Right</a>
         </p>
     </div>
 

@@ -2,10 +2,14 @@
 /* Image Diff Viewer */
 .image-diff {
     width: 100%;
-}
-.image-diff td {
-    width:30%;
+    max-width: 1800px;
 }
 .image-diff img {
-    width:100%;
+    image-rendering: pixelated;
+}
+.image-diff .diff-left, .image-diff .diff-right {
+    width: 400px;
+}
+.image-diff .diff-container img {
+    width: 100%;
 }
