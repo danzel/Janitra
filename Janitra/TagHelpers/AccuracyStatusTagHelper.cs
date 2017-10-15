@@ -24,9 +24,10 @@ namespace Janitra.TagHelpers
 				{
 					case AccuracyStatus.Unset:
 						return "is-warning";
-					case AccuracyStatus.Correct:
 					case AccuracyStatus.Perfect:
 						return "is-success";
+					case AccuracyStatus.Good:
+						return "is-primary";
 					case AccuracyStatus.Incorrect:
 						return "is-danger";
 					default:

@@ -37,8 +37,11 @@
                         case AccuracyStatus.Unset:
                             className = "is-warning";
                             break;
-                        case AccuracyStatus.Correct:
+                        case AccuracyStatus.Perfect:
                             className = "is-success";
+                            break;
+                        case AccuracyStatus.Good:
+                            className = "is-primary";
                             break;
                         case AccuracyStatus.Incorrect:
                             className = "is-danger";

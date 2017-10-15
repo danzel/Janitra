@@ -15,11 +15,10 @@
 		/// </summary>
 		Incorrect = 1,
 
-
 		/// <summary>
 		/// The result is mostly correct
 		/// </summary>
-		Correct = 2,
+		Good = 2,
 
 		/// <summary>
 		/// The result is pixel perfect with on device

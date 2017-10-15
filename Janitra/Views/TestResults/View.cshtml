@@ -120,13 +120,16 @@
                 <div class="field-body field has-addons">
                     <input type="hidden" name="id" value="@Model.TestResultId"/>
                     <span class="control">
-                        <input type="submit" class="button is-outlined is-success" name="status" value="Correct"/>
+                        <input type="submit" class="button is-outlined is-success" name="status" value="Perfect" />
+                    </span>
+                    <span class="control">
+                        <input type="submit" class="button is-outlined is-primary" name="status" value="Good" />
+                    </span>
+                    <span class="control">
+                        <input type="submit" class="button is-outlined is-danger" name="status" value="Incorrect" />
                     </span>
                     <span class="control">
                         <input type="submit" class="button is-outlined is-warning" name="status" value="Unset"/>
-                    </span>
-                    <span class="control">
-                        <input type="submit" class="button is-outlined is-danger" name="status" value="Incorrect"/>
                     </span>
                 </div>
             </div>
