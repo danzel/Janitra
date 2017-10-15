@@ -13,3 +13,7 @@
 .image-diff .diff-container img {
     width: 100%;
 }
+.image-diff td {
+    vertical-align: middle;
+    text-align: center;
+}
