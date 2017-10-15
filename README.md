@@ -1,5 +1,7 @@
 # Janitra
 
+[![Build status](https://ci.appveyor.com/api/projects/status/hwgx45rwkhjwnw93/branch/master?svg=true)](https://ci.appveyor.com/project/danzel/janitra/branch/master)
+
 Janitra is a proposed CI-like system for running and recording tests against Citra.
 It manages the central repository of tests, and stores and presents the results that are submitted.
 
