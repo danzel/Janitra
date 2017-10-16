@@ -64,7 +64,7 @@ namespace Janitra.Services
 			_baseUrl = "https://" + account.Credentials.AccountName + ".blob.core.windows.net/";
 		}
 
-		private async Task<string> Store(string containerName, byte[] bytes, string extension = null)
+		private async Task<string> Store(string containerName, byte[] bytes, string extension, string contentType)
 		{
 			var container = _client.GetContainerReference(containerName);
 			await container.CreateIfNotExistsAsync(BlobContainerPublicAccessType.Blob, null, null);
@@ -81,6 +81,7 @@ namespace Janitra.Services
 			else
 			{
 				_logger.LogInformation("Storing file {fileName} in container {container}", fileName, containerName);
+				blob.Properties.ContentType = contentType;
 				await blob.UploadFromByteArrayAsync(bytes, 0, bytes.Length);
 			}
 
@@ -89,22 +90,22 @@ namespace Janitra.Services
 
 		public async Task<string> StoreTestRom(byte[] romBytes)
 		{
-			return await Store("testroms", romBytes, ".3dsx");
+			return await Store("testroms", romBytes, ".3dsx", "application/octet-stream");
 		}
 
 		public async Task<string> StoreMovie(byte[] movieBytes)
 		{
-			return await Store("movies", movieBytes, ".cts");
+			return await Store("movies", movieBytes, ".cts", "application/octet-stream");
 		}
 
 		public async Task<string> StoreLog(byte[] logBytes)
 		{
-			return await Store("logs", logBytes, ".txt");
+			return await Store("logs", logBytes, ".txt", "text/plain");
 		}
 
 		public async Task<string> StoreScreenshot(byte[] screenshotBytes)
 		{
-			return await Store("screenshots", screenshotBytes, ".png");
+			return await Store("screenshots", screenshotBytes, ".png", "image/png");
 		}
 	}
 }
